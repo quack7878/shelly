@@ -6,6 +6,7 @@ const resources = {
     translation: {
       'search': 'Search',
       'language': 'Language',
+      'tint': 'Tint',
       'english': 'English',
       'french': 'French',
       'pink': 'Pink',
@@ -13,12 +14,15 @@ const resources = {
       'discover-next-read': 'Discover your next read',
       'search-by-title': 'Search by title',
       'no-books-found': 'No books found for ',
+      'googlekey': 'Google Books Api key',
+      'save': 'Save',
     }
   },
   fr: {
     translation: {
       'search': 'Rechercher',
       'language': 'Langue',
+      'tint': 'Teinte',
       'english': 'Anglais',
       'french': 'Français',
       'pink': 'Rose',
@@ -26,6 +30,8 @@ const resources = {
       'discover-next-read': 'Découvre ta prochaine lecture',
       'search-by-title': 'Recherche par le titre',
       'no-books-found': 'Aucun livres trouvés pour  ',
+      'googlekey': 'Clé Api Google Books',
+      'save': 'Sauvegarder',
     }
   }
 }
