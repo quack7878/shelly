@@ -23,6 +23,16 @@ export async function populate() {
     id: "language",
     value: "en",
   })
+
+  await db.preferences.add({
+    id: "api",
+    value: "openlibrary",
+  })
+
+  await db.preferences.add({
+    id: "google_key",
+    value: "",
+  })
 }
 
 db.on('populate', populate)
