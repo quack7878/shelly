@@ -199,6 +199,7 @@ export default function Search() {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
+                  textAlign: 'start',
                 }}
               >
                 {book.title}
@@ -207,7 +208,10 @@ export default function Search() {
               <Typography
                 variant="body2"
                 color="text.secondary"
-                sx={{ mt: 0.75 }}
+                sx={{ 
+                  mt: 0.75,
+                  textAlign: 'start',
+                }}
               >
                 {book.author || 'Unknown author'}
               </Typography>

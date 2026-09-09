@@ -1,6 +1,21 @@
 import { db } from '../db'
+import { get } from './preferences'
 
 export async function searchBooks(query) {
+    const api = await get('api')
+    const googleKey = await get('google_key')
+    const books = []
+
+    if (api == 'openlibrary') {
+      return await searchOpenLibrary(query)
+    }
+    else if (api == 'googlebooks' && googleKey != '') {
+      return await searchGoogleBooks(query, googleKey)
+    }
+    
+}
+
+async function searchOpenLibrary(query) {
     const url = new URL("https://openlibrary.org/search.json")
     url.searchParams.set("q", query);  
     url.searchParams.set("limit", "10");  
@@ -13,6 +28,31 @@ export async function searchBooks(query) {
   const books = response.docs.map(mapOpenLibraryBook)
 
   return books
+}
+
+async function searchGoogleBooks(query, googleKey) {
+  const url = new URL("https://www.googleapis.com/books/v1/volumes")
+
+  url.searchParams.set("q", query)
+  url.searchParams.set("maxResults", "10")
+  url.searchParams.set("key", googleKey)
+
+  url.searchParams.set(
+    "fields",
+    "items(id,volumeInfo(title,authors,industryIdentifiers,imageLinks,pageCount,publishedDate,publisher,description,previewLink,infoLink))"
+  )
+
+  const response = await fetch(url)
+
+    if (!response.ok) {
+    throw new Error(
+      `Google Books API error: ${response.status} ${response.statusText}`
+    )
+  }
+
+  const data = await response.json()
+
+  return (data.items ?? []).map(mapGoogleBook)
 }
 
 function mapOpenLibraryBook(doc) {
@@ -31,6 +71,32 @@ function mapOpenLibraryBook(doc) {
     openLibraryEditionId: editionId,
   }
 
+}
+
+function mapGoogleBook(book) {
+  const info = book.volumeInfo ?? {}
+
+  const isbn10 = info.industryIdentifiers?.find(
+    identifier => identifier.type === "ISBN_10"
+  )?.identifier
+
+  const isbn13 = info.industryIdentifiers?.find(
+    identifier => identifier.type === "ISBN_13"
+  )?.identifier
+
+  return {
+    id: book.id,
+    title: info.title ?? null,
+    author: info.authors[0] ?? [],
+    isbn: isbn13 ?? isbn10 ?? null,
+    coverUrl: info.imageLinks?.thumbnail?.replace(/^http:/, "https:") ?? null,
+    pages: info.pageCount ?? null,
+    publishedDate: info.publishedDate ?? null,
+    publishingHouse: info.publisher ?? null,
+    description: info.description ?? null,
+    previewLink: info.previewLink ?? null,
+    infoLink: info.infoLink ?? null
+  }
 }
 
 export async function saveBook(
