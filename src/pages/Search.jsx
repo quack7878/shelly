@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { searchBooks } from '../services/books'
 import { useTranslation } from 'react-i18next'
 import { save, get } from '../services/preferences'
+import { useNavigate } from 'react-router-dom'
 
 import {
   Alert,
@@ -10,6 +11,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  CardActionArea,
   CircularProgress,
   Grid,
   InputAdornment,
@@ -20,6 +22,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 
 export default function Search() {
+  const navigate = useNavigate()
   const { t, i18n } = useTranslation()
 
   const [books, setBooks] = useState([])
@@ -165,57 +168,59 @@ export default function Search() {
               },
             }}
           >
-            <Box
-              component="img"
-              src={book.coverUrl}
-              alt={book.title}
-              sx={{
-                width: 90,
-                height: 130,
-                objectFit: 'cover',
-                borderRadius: 2,
-                flexShrink: 0,
-                bgcolor: 'background.default',
-                display: 'flex'
-              }}
-            />
-
-            <CardContent
-              sx={{
-                p: 0,
-                '&:last-child': {
-                  pb: 0,
-                },
-                minWidth: 0,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-              }}
-            >
-              <Typography
-                variant="h6"
-                fontWeight={700}
+            <CardActionArea onClick={() => navigate('/book', { state: { book } })}>
+              <Box
+                component="img"
+                src={book.coverUrl}
+                alt={book.title}
                 sx={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  textAlign: 'start',
+                  width: 90,
+                  height: 130,
+                  objectFit: 'cover',
+                  borderRadius: 2,
+                  flexShrink: 0,
+                  bgcolor: 'background.default',
+                  display: 'flex'
                 }}
-              >
-                {book.title}
-              </Typography>
+              />
 
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ 
-                  mt: 0.75,
-                  textAlign: 'start',
+              <CardContent
+                sx={{
+                  p: 0,
+                  '&:last-child': {
+                    pb: 0,
+                  },
+                  minWidth: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                 }}
               >
-                {book.author || 'Unknown author'}
-              </Typography>
-            </CardContent>
+                <Typography
+                  variant="h6"
+                  fontWeight={700}
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    textAlign: 'start',
+                  }}
+                >
+                  {book.title}
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ 
+                    mt: 0.75,
+                    textAlign: 'start',
+                  }}
+                >
+                  {book.author || 'Unknown author'}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
           </Card>
         ))}
       </Box>
