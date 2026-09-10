@@ -5,6 +5,7 @@ import Settings from './pages/Settings'
 import Search from './pages/Search'
 import NavBar from './pages/Navbar'
 import CustomTheme from './theme/CustomTheme'
+import Book from './pages/Book'
 
 function App() {
 
@@ -16,7 +17,8 @@ function App() {
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/settings' element={<Settings />} />
-                <Route path='/Search' element={<Search />} />
+                <Route path='/search' element={<Search />} />
+                <Route path='/book' element={<Book />} />
               </Routes>
               <NavBar></NavBar>
             </BrowserRouter>
