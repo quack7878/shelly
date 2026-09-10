@@ -27,6 +27,11 @@ import {
   Typography,
 } from '@mui/material'
 
+import {  
+  enUS,  
+  frFR,
+} from '@mui/x-date-pickers/locales'
+
 export default function Home() {
 
   const { t, i18n } = useTranslation()
@@ -34,15 +39,25 @@ export default function Home() {
   const [book, setBook] = useState(state?.book)
   const [language, setLanguage] = useState('')
 
+  const [locale, setLocale] = useState(frFR)
+
+  const locales = {
+    'fr': frFR,
+    'en': enUS
+  }
+
   useEffect(() => {
     async function init() {
-      i18n.changeLanguage(await get('language'))
-      setLanguage(await get('language'))
+      const l = await get('language')
+      i18n.changeLanguage(l)
+      setLanguage(l)
+
+      setLocale(locales[l])
     }
+
 
     init()
   }, [])
-  console.log(language)
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -182,7 +197,7 @@ export default function Home() {
         <LocalizationProvider 
           dateAdapter={AdapterDayjs} 
           adapterLocale={language} 
-          localeText={{toolbarTitle: t('select-date')  }}
+          localeText={locale.components.MuiLocalizationProvider.defaultProps.localeText}
         >
 
           <MobileDatePicker
