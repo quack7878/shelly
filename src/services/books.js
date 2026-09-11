@@ -84,10 +84,11 @@ function mapGoogleBook(book) {
     identifier => identifier.type === "ISBN_13"
   )?.identifier
 
+  const authors = info.authors ?? undefined
   return {
     id: book.id,
     title: info.title ?? null,
-    author: info.authors[0] ?? [],
+    author: authors ? authors[0] : null,
     isbn: isbn13 ?? isbn10 ?? null,
     coverUrl: info.imageLinks?.thumbnail?.replace(/^http:/, "https:") ?? null,
     pages: info.pageCount ?? null,

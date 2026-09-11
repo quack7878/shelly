@@ -168,18 +168,17 @@ export default function Search() {
               },
             }}
           >
-            <CardActionArea onClick={() => navigate('/book', { state: { book } })}>
+            <CardActionArea onClick={() => navigate('/book', { state: { book } })} sx={{ display: 'flex', justifyContent: 'spaceAround',  }}>
               <Box
                 component="img"
                 src={book.coverUrl}
-                alt={book.title}
                 sx={{
                   width: 90,
                   height: 130,
                   objectFit: 'cover',
                   borderRadius: 2,
                   flexShrink: 0,
-                  bgcolor: 'background.default',
+                  bgcolor: 'grey',
                   display: 'flex'
                 }}
               />
@@ -194,6 +193,9 @@ export default function Search() {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
+                  flexGrow: 1,
+                  padding: 2,
+                  alignSelf: 'start',
                 }}
               >
                 <Typography
