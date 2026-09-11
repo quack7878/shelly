@@ -29,6 +29,7 @@ const resources = {
       'hardcover': 'Hardcover',
       'pocket': 'Pocket',
       'select-date': 'Select a date',
+      'book-search-error': 'Unable to load books. Please try again.',
     }
   },
   fr: {
@@ -58,6 +59,7 @@ const resources = {
       'hardcover': 'Livre relié',
       'pocket': 'Livre de poche',
       'select-date': 'Choisir une date',
+      'books-search-error': 'Impossible de charger les livres. Réessayez plus tard.',
     }
   }
 }

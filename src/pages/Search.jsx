@@ -54,7 +54,7 @@ export default function Search() {
       const result = await searchBooks(trimmedQuery)
       setBooks(result || [])
     } catch {
-      setError('Unable to load books. Please try again.')
+      setError(t('books-search-error'))
     } finally {
       setLoading(false)
     }
