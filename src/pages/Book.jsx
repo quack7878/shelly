@@ -58,13 +58,24 @@ export default function Home() {
 
       setLocale(locales[l])
     }
-    console.log(book)
 
+    console.log(book)
     init()
   }, [])
 
-  const handleSubmit = (event) => {
+  async function handleSubmit(event) {
     event.preventDefault()
+
+    const submitImg = ''
+    if (book.image) {
+      submitImg = book.image 
+    }
+    else if (book.coverUrl) {
+      submitImg = await getBookCoverBlob(book.coverUrl)
+    }
+
+    console.log(submitImg)
+
   }
 
   function handleCardClick() {
@@ -73,12 +84,10 @@ export default function Home() {
 
   const handleFileChange = (event) => {
     const file = event.target.files?.[0]
-    console.log('file change')
 
     if (!file) return
 
     setBook({...book, image: file})
-    console.log(book)
 
     const previewUrl = URL.createObjectURL(file)
     setImagePreview(previewUrl)
@@ -245,6 +254,19 @@ export default function Home() {
           />
         </LocalizationProvider>
 
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            px: { xs: 2, sm: 4 },
+            borderRadius: 3,
+            textTransform: 'none',
+            fontWeight: 700,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {t('save')}
+        </Button>
     </Box>
   )
 }

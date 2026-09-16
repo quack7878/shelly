@@ -16,10 +16,10 @@ export async function searchBooks(query) {
 }
 
 async function searchOpenLibrary(query) {
-    const url = new URL("https://openlibrary.org/search.json")
-    url.searchParams.set("q", query);  
-    url.searchParams.set("limit", "10");  
-    url.searchParams.set("fields", [ "title", "author_name", "isbn", "cover_i", "number_of_pages_median", "first_publish_year", "publisher", "key", "edition_key", "first_sentence"].join(","))
+    const url = new URL('https://openlibrary.org/search.json')
+    url.searchParams.set('q', query);  
+    url.searchParams.set('limit', '10');  
+    url.searchParams.set('fields', [ 'title', 'author_name', 'isbn', 'cover_i', 'number_of_pages_median', 'first_publish_year', 'publisher', 'key', 'edition_key', 'first_sentence'].join(','))
 
   const response = await fetch(url)
     .then(response => response.json())
@@ -31,15 +31,15 @@ async function searchOpenLibrary(query) {
 }
 
 async function searchGoogleBooks(query, googleKey) {
-  const url = new URL("https://www.googleapis.com/books/v1/volumes")
+  const url = new URL('https://www.googleapis.com/books/v1/volumes')
 
-  url.searchParams.set("q", query)
-  url.searchParams.set("maxResults", "10")
-  url.searchParams.set("key", googleKey)
+  url.searchParams.set('q', query)
+  url.searchParams.set('maxResults', '10')
+  url.searchParams.set('key', googleKey)
 
   url.searchParams.set(
-    "fields",
-    "items(id,volumeInfo(title,authors,industryIdentifiers,imageLinks,pageCount,publishedDate,publisher,description,previewLink,infoLink))"
+    'fields',
+    'items(id,volumeInfo(title,authors,industryIdentifiers,imageLinks,pageCount,publishedDate,publisher,description,previewLink,infoLink))'
   )
 
   const response = await fetch(url)
@@ -52,23 +52,23 @@ async function searchGoogleBooks(query, googleKey) {
 
   const data = await response.json()
 
-  return (data.items ?? []).map(mapGoogleBook)
+  const books = data.items.map(mapGoogleBook)
+
+  return books
 }
 
 function mapOpenLibraryBook(doc) {
-  const workId = doc.key?.replace("/works/", "")
+  const workId = doc.key?.replace('/works/', '')
   const editionId = doc.edition_key?.[0]
 
   return {    
     isbn: doc.isbn?.[0],
-    title: doc.title ?? "Untitled",
+    title: doc.title ?? 'Untitled',
     coverUrl: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-S.jpg` : undefined,
     pages: doc.number_of_pages_median,
-    author: doc.author_name?.join(", "),
+    author: doc.author_name?.join(', '),
     publishedDate: doc.first_publish_year ? new Date(`${doc.first_publish_year}-01-01`) : undefined,
     publishingHouse: doc.publisher?.[0],
-    openLibraryWorkId: workId,
-    openLibraryEditionId: editionId,
   }
 
 }
@@ -77,11 +77,11 @@ function mapGoogleBook(book) {
   const info = book.volumeInfo ?? {}
 
   const isbn10 = info.industryIdentifiers?.find(
-    identifier => identifier.type === "ISBN_10"
+    identifier => identifier.type === 'ISBN_10'
   )?.identifier
 
   const isbn13 = info.industryIdentifiers?.find(
-    identifier => identifier.type === "ISBN_13"
+    identifier => identifier.type === 'ISBN_13'
   )?.identifier
 
   const authors = info.authors ?? undefined
@@ -90,40 +90,33 @@ function mapGoogleBook(book) {
     title: info.title ?? null,
     author: authors ? authors[0] : null,
     isbn: isbn13 ?? isbn10 ?? null,
-    coverUrl: info.imageLinks?.thumbnail?.replace(/^http:/, "https:") ?? null,
+    coverUrl: info.imageLinks?.thumbnail?.replace(/^http:/, 'https:') ?? null,
     pages: info.pageCount ?? null,
-    publicationDate: info.publishedDate ?? null,
+    publishedDate: info.publishedDate ?? null,
     publishingHouse: info.publisher ?? null,
-    description: info.description ?? null,
-    previewLink: info.previewLink ?? null,
-    infoLink: info.infoLink ?? null
   }
 }
 
 export async function saveBook(
   id,
-  title,
   isbn,
-  pages,
-  type,
+  title,
   author,
-  publicationDate,
+  publishedDate,
+  pages,
   publishingHouse,
-  openLibraryWorkId,
-  openLibraryEditionId,
+  type,
 ) {
 
   await db.books.put({
   id,
   isbn,
   title,
-  pages,
-  type,
   author,
-  publicationDate,
+  publishedDate,
+  pages,
   publishingHouse,
-  openLibraryWorkId,
-  openLibraryEditionId,
+  type,
   })
 }
 
