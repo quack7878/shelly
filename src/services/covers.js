@@ -1,9 +1,7 @@
 import { db } from '../db'
 
-export async function saveBookCover(
-  bookId,
-  coverUrl,
-  sourceId?,
+export async function getBookCoverBlob(
+  coverUrl
 ) {
   const response = await fetch(coverUrl)
 
@@ -13,14 +11,5 @@ export async function saveBookCover(
 
   const blob = await response.blob()
 
-  await db.bookCovers.put({
-    bookId,
-    blob,
-    source: 'openlibrary',
-    sourceId,
-  })
-}
-
-export async function getBookCover(bookId) {
-  return db.bookCovers.get(bookId)
+  return blob
 }
