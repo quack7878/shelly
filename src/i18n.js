@@ -29,7 +29,7 @@ const resources = {
       'hardcover': 'Hardcover',
       'pocket': 'Pocket',
       'select-date': 'Select a date',
-      'book-search-error': 'Unable to load books. Please try again.',
+      'books-search-error': 'Unable to load books. Please try again.',
     }
   },
   fr: {

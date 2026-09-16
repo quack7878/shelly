@@ -1,4 +1,4 @@
-import { useState, Form, useEffect } from 'react'
+import { useState, Form, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import FormControl from '@mui/material/FormControl'
@@ -12,6 +12,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/fr'
 import 'dayjs/locale/en'
 import { get } from '../services/preferences'
+import { getBookCoverBlob } from '../services/covers'
 
 import {
   Alert,
@@ -20,6 +21,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  CardActionArea,
   CircularProgress,
   Grid,
   InputAdornment,
@@ -38,6 +40,8 @@ export default function Home() {
   const { state } = useLocation()
   const [book, setBook] = useState(state?.book)
   const [language, setLanguage] = useState('')
+  const imageRef = useRef(null)
+  const [imagePreview, setImagePreview] = useState(book.coverUrl)
 
   const [locale, setLocale] = useState(frFR)
 
@@ -54,13 +58,32 @@ export default function Home() {
 
       setLocale(locales[l])
     }
-
+    console.log(book)
 
     init()
   }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault()
+  }
+
+  function handleCardClick() {
+    imageRef.current?.click()
+  }
+
+  const handleFileChange = (event) => {
+    const file = event.target.files?.[0]
+    console.log('file change')
+
+    if (!file) return
+
+    setBook({...book, image: file})
+    console.log(book)
+
+    const previewUrl = URL.createObjectURL(file)
+    setImagePreview(previewUrl)
+
+    event.target.value = ''
   }
 
   return (
@@ -92,20 +115,30 @@ export default function Home() {
         </Typography>
       </Box>
 
-      <Box
-        component="img"
-        src={book.coverUrl}
-        alt={book.title}
-        sx={{
-          width: 90,
-          height: 130,
-          objectFit: 'cover',
-          borderRadius: 2,
-          flexShrink: 0,
-          bgcolor: 'background.default',
-          display: 'flex'
-        }}
-      />
+        <CardActionArea onClick={handleCardClick} sx={{ display: 'flex' }}>
+          <Box
+            component="img"
+            src={imagePreview}
+            alt={book.title}
+            sx={{
+              width: 90,
+              height: 130,
+              objectFit: 'cover',
+              borderRadius: 2,
+              flexShrink: 0,
+              bgcolor: 'background.default',
+              display: 'flex'
+            }}
+          >
+          </Box>
+          <input 
+            type="file" 
+            accept='image/*'
+            ref={imageRef}
+            style= {{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+        </CardActionArea>
 
         <TextField
           fullWidth
