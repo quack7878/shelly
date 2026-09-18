@@ -13,7 +13,7 @@ function App() {
     <CustomTheme>
       <main style={{ display: 'flex', flexGrow: 1, flexDirection: 'column'}} >
         <Container sx={{ bgcolor: 'background.default', display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 0 }}>
-            <BrowserRouter basename='/shelly'>
+            <BrowserRouter basename='/'>
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/settings' element={<Settings />} />
