@@ -1,0 +1,1 @@
+{"name":"Shelly","short_name":"Shelly","description":"A local reading tracker","start_url":"/shelly/","display":"standalone","background_color":"#ffffff","theme_color":"#ffffff","lang":"en","scope":"/shelly/","icons":[{"src":"/shelly/icons/icon_192X192.png","sizes":"192x192","type":"image/png"},{"src":"/shelly/icons/icon_512X512.png","sizes":"512x512","type":"image/png"}]}
