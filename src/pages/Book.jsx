@@ -66,7 +66,7 @@ export default function Home() {
   async function handleSubmit(event) {
     event.preventDefault()
 
-    const submitImg = ''
+    let submitImg = ''
     if (book.image) {
       submitImg = book.image 
     }
