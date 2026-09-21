@@ -16,6 +16,7 @@ require "sinatra/reloader"
 class MySinatraApp < Sinatra::Base
     set :public_folder, File.expand_path("public", __dir__)
     set :static, true
+    set :bind, '0.0.0.0'
 
     configure :development do
         register Sinatra::Reloader
