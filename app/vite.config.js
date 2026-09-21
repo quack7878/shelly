@@ -28,17 +28,17 @@ export default defineConfig({
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
-        start_url: '/shelly/',
-        scope: '/shelly/',
+        start_url: '/',
+        scope: '/',
 
         icons: [
           {
-            src: '/shelly/icons/icon_192X192.png',
+            src: '/icons/icon_192X192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/shelly/icons/icon_512X512.png',
+            src: '/icons/icon_512X512.png',
             sizes: '512x512',
             type: 'image/png',
           },
