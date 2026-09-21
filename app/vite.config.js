@@ -22,6 +22,7 @@ export default defineConfig({
       },
 
       manifest: {
+        id: '/',
         name: 'Shelly',
         short_name: 'Shelly',
         description: 'A local reading tracker',
