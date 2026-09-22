@@ -16,10 +16,8 @@ export async function searchBooks(query) {
 }
 
 async function searchOpenLibrary(query) {
-    const url = new URL('https://openlibrary.org/search.json')
-    url.searchParams.set('q', query);  
-    url.searchParams.set('limit', '10');  
-    url.searchParams.set('fields', [ 'title', 'author_name', 'isbn', 'cover_i', 'number_of_pages_median', 'first_publish_year', 'publisher', 'key', 'edition_key', 'first_sentence'].join(','))
+    const url = new URL('/api/openlibrary', window.location.origin)
+    url.searchParams.set('q', query)  
 
   const response = await fetch(url)
     .then(response => response.json())
@@ -31,18 +29,12 @@ async function searchOpenLibrary(query) {
 }
 
 async function searchGoogleBooks(query, googleKey) {
-  const url = new URL('https://www.googleapis.com/books/v1/volumes')
-
+  const url = new URL('/api/googlebooks', window.location.origin)
   url.searchParams.set('q', query)
-  url.searchParams.set('maxResults', '10')
   url.searchParams.set('key', googleKey)
 
-  url.searchParams.set(
-    'fields',
-    'items(id,volumeInfo(title,authors,industryIdentifiers,imageLinks,pageCount,publishedDate,publisher,description,previewLink,infoLink))'
-  )
-
   const response = await fetch(url)
+  console.log(response)
 
     if (!response.ok) {
     throw new Error(
