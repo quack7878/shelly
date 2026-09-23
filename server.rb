@@ -21,6 +21,14 @@ class MySinatraApp < Sinatra::Base
 
     configure :development do
         register Sinatra::Reloader
+        set :host_authorization, {
+          permitted_hosts: [
+            "shelly.acourcy.ca",
+            "acourcy.ca",
+            "localhost",
+            "127.0.0.1"
+          ]
+        }
     end
 
     get "/api/googlebooks" do
