@@ -13,6 +13,7 @@ import 'dayjs/locale/fr'
 import 'dayjs/locale/en'
 import { get } from '../services/preferences'
 import { getBookCoverBlob } from '../services/covers'
+import { saveBook } from '../services/books'
 
 import {
   Alert,
@@ -60,7 +61,6 @@ export default function Home() {
       setLocale(locales[l])
     }
 
-    console.log(book)
     init()
   }, [])
 
@@ -74,7 +74,16 @@ export default function Home() {
       setSubmitImg(URL.createObjectURL(await getBookCoverBlob(book.coverUrl)))
     }
 
-    console.log(submitImg)
+    saveBook(
+      book.isbn,
+      book.title,
+      book.author,
+      book.publishedDate,
+      book.pages,
+      book.publishingHouse,
+      'to read',
+      submitImg,
+    )
 
   }
 
@@ -267,22 +276,6 @@ export default function Home() {
         >
           {t('save')}
         </Button>
-          {submitImg ?
-            (<Box
-              component="img"
-              src={submitImg}
-              alt={book.title}
-              sx={{
-                width: 90,
-                height: 130,
-                objectFit: 'cover',
-                borderRadius: 2,
-                flexShrink: 0,
-                bgcolor: 'background.default',
-                display: 'flex'
-              }}
-            />) :
-            (<p>aaa</p>)}
     </Box>
   )
 }

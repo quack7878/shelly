@@ -90,7 +90,6 @@ function mapGoogleBook(book) {
 }
 
 export async function saveBook(
-  id,
   isbn,
   title,
   author,
@@ -98,17 +97,19 @@ export async function saveBook(
   pages,
   publishingHouse,
   type,
+  cover,
 ) {
 
   await db.books.put({
-  id,
-  isbn,
-  title,
-  author,
-  publishedDate,
-  pages,
-  publishingHouse,
-  type,
+    id: 1,
+    isbn,
+    title,
+    author,
+    publishedDate,
+    pages,
+    publishingHouse,
+    type,
+    cover,
   })
 }
 
