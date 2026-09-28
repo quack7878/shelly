@@ -42,6 +42,7 @@ export default function Home() {
   const [language, setLanguage] = useState('')
   const imageRef = useRef(null)
   const [imagePreview, setImagePreview] = useState(book.coverUrl)
+  const [submitImg, setSubmitImg] = useState()
 
   const [locale, setLocale] = useState(frFR)
 
@@ -66,12 +67,11 @@ export default function Home() {
   async function handleSubmit(event) {
     event.preventDefault()
 
-    let submitImg = ''
     if (book.image) {
-      submitImg = book.image 
+      setSubmitImg(book.image)
     }
     else if (book.coverUrl) {
-      submitImg = await getBookCoverBlob(book.coverUrl)
+      setSubmitImg(URL.createObjectURL(await getBookCoverBlob(book.coverUrl)))
     }
 
     console.log(submitImg)
@@ -267,6 +267,22 @@ export default function Home() {
         >
           {t('save')}
         </Button>
+          {submitImg ?
+            (<Box
+              component="img"
+              src={submitImg}
+              alt={book.title}
+              sx={{
+                width: 90,
+                height: 130,
+                objectFit: 'cover',
+                borderRadius: 2,
+                flexShrink: 0,
+                bgcolor: 'background.default',
+                display: 'flex'
+              }}
+            />) :
+            (<p>aaa</p>)}
     </Box>
   )
 }

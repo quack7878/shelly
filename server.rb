@@ -59,6 +59,32 @@ class MySinatraApp < Sinatra::Base
 
     end
 
+    get "/api/cover/googlebooks" do
+      u = params["url"]
+      key = params["key"]
+
+      p u
+      response = Faraday.get(u) do |request|
+      end
+      p response
+
+      response.body
+
+    end 
+
+    get "/api/cover/openlibrary" do
+      query = params["q"]
+
+      response = Faraday.get("https://openlibrary.org/search.json") do |request|
+        request.params["q"] = query
+        request.params["limit"] = 2
+        request.params["fields"] = "title,author_name,isbn,cover_i,number_of_pages_median,first_publish_year,publisher,key,edition_key,first_sentence"
+      end
+
+      response.body
+
+    end
+
     get "*" do
       send_file File.join(settings.public_folder, "index.html")
     end
