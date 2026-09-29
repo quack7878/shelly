@@ -63,10 +63,8 @@ class MySinatraApp < Sinatra::Base
       u = params["url"]
       key = params["key"]
 
-      p u
       response = Faraday.get(u) do |request|
       end
-      p response
 
       response.body
 

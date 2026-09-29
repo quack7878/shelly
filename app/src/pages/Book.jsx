@@ -59,7 +59,7 @@ export default function Home() {
       setLanguage(l)
 
       setLocale(locales[l])
-      setBook({...book, cover: await getBookCoverBlob(imagePreview)})
+      setBook(new Book({...book, cover: await getBookCoverBlob(imagePreview)}))
     }
 
     init()
@@ -72,6 +72,10 @@ export default function Home() {
 
   }
 
+  function updateBook(field, event) {
+    setBook(new Book({...book, [field]: event.target.value}))
+  }
+
   function handleCardClick() {
     imageRef.current?.click()
   }
@@ -81,7 +85,7 @@ export default function Home() {
 
     if (!file) return
 
-    setBook({...book, cover: file})
+    setBook(new Book({...book, cover: file}))
 
     const previewUrl = URL.createObjectURL(file)
     setImagePreview(previewUrl)
@@ -146,7 +150,7 @@ export default function Home() {
         <TextField
           fullWidth
           value={book.title}
-          onChange={(event) => setBook({...book, title: event.target.value})}
+          onChange={(event) => updateBook('title', event)}
           label={t('title')}
           variant='outlined'
           sx={{
@@ -159,7 +163,7 @@ export default function Home() {
         <TextField
           fullWidth
           value={book.isbn}
-          onChange={(event) => setBook({...book, isbn: event.target.value})}
+          onChange={(event) => updateBook('isbn', event)}
           label='ISBN'
           variant='outlined'
           sx={{
@@ -172,7 +176,7 @@ export default function Home() {
         <TextField
           fullWidth
           value={book.pages}
-          onChange={(event) => setBook({...book, pages: event.target.value})}
+          onChange={(event) => updateBook('pages', event)}
           label={t('pages')}
           variant='outlined'
           sx={{
@@ -185,7 +189,7 @@ export default function Home() {
         <TextField
           fullWidth
           value={book.author}
-          onChange={(event) => setBook({...book, author: event.target.value})}
+          onChange={(event) => updateBook('author', event)}
           label={t('author')}
           variant='outlined'
           sx={{
@@ -198,7 +202,7 @@ export default function Home() {
         <TextField
           fullWidth
           value={book.publishingHouse ?? ''}
-          onChange={(event) => setBook({...book, publishingHouse: event.target.value})}
+          onChange={(event) => updateBook('publishingHouse', event)}
           label={t('publishing-house')}
           variant='outlined'
           sx={{
@@ -217,7 +221,7 @@ export default function Home() {
             id='select-type'
             label={t('type')}
             value={book.type ?? 'ebook'}
-            onChange={(event) => setBook({ ...book, type: event.target.value})}
+          onChange={(event) => updateBook('type', event)}
             sx={{
               width: '100%',
             }}
@@ -239,9 +243,9 @@ export default function Home() {
           <MobileDatePicker
             label={t('publishing-date')}
             closeOnSelect={true}
-            value={dayjs(book.publishedDate)}
+            value={dayjs(book.publishedDate) ?? null}
             format='YYYY/MM/DD'
-            onChange={(value) => setBook({ ...book, publishedDate: value ? value.format("YYYY-MM-DD") : null})}
+            onChange={(value) => updateBook('publishedDate', value ? value.format("YYYY-MM-DD") : null)}
             sx={{
               width: '100%',
             }}
