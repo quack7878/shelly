@@ -40,7 +40,7 @@ export default function Home() {
 
   const { t, i18n } = useTranslation()
   const { state } = useLocation()
-  const [imagePreview, setImagePreview] = useState(state?.book.coverUrl)
+  const [imagePreview, setImagePreview] = useState()
   const [book, setBook] = useState(() => new Book(state?.book))
   const [language, setLanguage] = useState('')
   const imageRef = useRef(null)
@@ -59,11 +59,23 @@ export default function Home() {
       setLanguage(l)
 
       setLocale(locales[l])
-      setBook(new Book({...book, cover: await getBookCoverBlob(imagePreview)}))
+      setBook(new Book({...book, cover: await getBookCoverBlob(state?.book.coverUrl)}))
     }
 
     init()
   }, [])
+
+  useEffect(() => {
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      setImagePreview(reader.result)
+    }
+
+    if (book.cover) {
+      reader.readAsDataURL(book.cover)
+    }
+  }, [book.cover])
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -87,10 +99,6 @@ export default function Home() {
 
     setBook(new Book({...book, cover: file}))
 
-    const previewUrl = URL.createObjectURL(file)
-    setImagePreview(previewUrl)
-
-    event.target.value = ''
   }
 
   return (
