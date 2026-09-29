@@ -1,9 +1,12 @@
 import { db } from '../db'
+import { get } from './preferences'
 
 export async function getBookCoverBlob(
   coverUrl
 ) {
-  const url = new URL('/api/cover/googlebooks', window.location.origin)
+  const api = await get('api')
+
+  const url = new URL(`/api/cover/${api}`, window.location.origin)
   url.searchParams.set('url', coverUrl)
 
   const response = await fetch(url)

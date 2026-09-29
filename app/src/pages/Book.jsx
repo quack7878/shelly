@@ -14,6 +14,7 @@ import 'dayjs/locale/en'
 import { get } from '../services/preferences'
 import { getBookCoverBlob } from '../services/covers'
 import { saveBook } from '../services/books'
+import { getTypes } from '../services/types'
 import { Book } from '../models/Book'
 
 import {
@@ -42,6 +43,7 @@ export default function Home() {
   const { state } = useLocation()
   const [imagePreview, setImagePreview] = useState()
   const [book, setBook] = useState(() => new Book(state?.book))
+  const [types, setTypes] = useState([])
   const [language, setLanguage] = useState('')
   const imageRef = useRef(null)
 
@@ -60,6 +62,7 @@ export default function Home() {
 
       setLocale(locales[l])
       setBook(new Book({...book, cover: await getBookCoverBlob(state?.book.coverUrl)}))
+      setTypes(await getTypes())
     }
 
     init()
@@ -229,16 +232,16 @@ export default function Home() {
             id='select-type'
             label={t('type')}
             value={book.type ?? 'ebook'}
-          onChange={(event) => updateBook('type', event)}
+            onChange={(event) => updateBook('type', event)}
             sx={{
               width: '100%',
             }}
           >
-            <MenuItem value={'ebook'}>{t('ebook')}</MenuItem>
-            <MenuItem value={'audiobook'}>{t('audio-book')}</MenuItem>
-            <MenuItem value={'paperback'}>{t('paperback')}</MenuItem>
-            <MenuItem value={'hardcover'}>{t('hardcover')}</MenuItem>
-            <MenuItem value={'pocket'}>{t('pocket')}</MenuItem>
+            {
+              types.map( type => 
+                <MenuItem id={type.id} value={type.type}>{t({type.type})}</MenuItem>
+              )
+            }
           </Select>
         </FormControl>
         

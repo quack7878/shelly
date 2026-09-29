@@ -5,6 +5,8 @@ const db = new Dexie('ShellyDatabase')
 db.version(1).stores({
   books: '++id, isbn, title, author, publishedDate, pages, publishingHouse, type, cover ',
   preferences: 'id, value',
+  status: '++id, status',
+  type: '++id, type',
 })
 
 export async function populate() {
@@ -32,6 +34,25 @@ export async function populate() {
     id: 'google_key',
     value: '',
   })
+
+  await db.status.bulkAdd([
+    { status: 'toRead' },  
+    { status: 'reading' },  
+    { status: 'read' },  
+    { status: 'abandoned' },  
+    { status: 'paused' },  
+  ])
+
+  await db.type.bulkAdd([
+    { type: 'ebook' },
+    { type: 'audiobook' },
+    { type: 'paperback' },
+    { type: 'hardcover' },
+    { type: 'pocket' },
+    { type: 'collector' },
+    { type: 'signed' },
+  ])
+
 }
 
 db.on('populate', populate)
