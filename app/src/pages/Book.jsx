@@ -14,6 +14,7 @@ import 'dayjs/locale/en'
 import { get } from '../services/preferences'
 import { getBookCoverBlob } from '../services/covers'
 import { saveBook } from '../services/books'
+import { Book } from '../models/Book'
 
 import {
   Alert,
@@ -39,11 +40,10 @@ export default function Home() {
 
   const { t, i18n } = useTranslation()
   const { state } = useLocation()
-  const [book, setBook] = useState(state?.book)
+  const [imagePreview, setImagePreview] = useState(state?.book.coverUrl)
+  const [book, setBook] = useState(() => new Book(state?.book))
   const [language, setLanguage] = useState('')
   const imageRef = useRef(null)
-  const [imagePreview, setImagePreview] = useState(book.coverUrl)
-  const [submitImg, setSubmitImg] = useState()
 
   const [locale, setLocale] = useState(frFR)
 
@@ -59,6 +59,7 @@ export default function Home() {
       setLanguage(l)
 
       setLocale(locales[l])
+      setBook({...book, cover: await getBookCoverBlob(imagePreview)})
     }
 
     init()
@@ -67,23 +68,7 @@ export default function Home() {
   async function handleSubmit(event) {
     event.preventDefault()
 
-    if (book.image) {
-      setSubmitImg(book.image)
-    }
-    else if (book.coverUrl) {
-      setSubmitImg(URL.createObjectURL(await getBookCoverBlob(book.coverUrl)))
-    }
-
-    saveBook(
-      book.isbn,
-      book.title,
-      book.author,
-      book.publishedDate,
-      book.pages,
-      book.publishingHouse,
-      'to read',
-      submitImg,
-    )
+    saveBook(book)
 
   }
 
@@ -96,7 +81,7 @@ export default function Home() {
 
     if (!file) return
 
-    setBook({...book, image: file})
+    setBook({...book, cover: file})
 
     const previewUrl = URL.createObjectURL(file)
     setImagePreview(previewUrl)

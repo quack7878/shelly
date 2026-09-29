@@ -1,5 +1,6 @@
 import { db } from '../db'
 import { get } from './preferences'
+import { Book } from '../models/Book'
 
 export async function searchBooks(query) {
     const api = await get('api')
@@ -78,7 +79,6 @@ function mapGoogleBook(book) {
 
   const authors = info.authors ?? undefined
   return {
-    id: book.id,
     title: info.title ?? null,
     author: authors ? authors[0] : null,
     isbn: isbn13 ?? isbn10 ?? null,
@@ -89,28 +89,30 @@ function mapGoogleBook(book) {
   }
 }
 
-export async function saveBook(
-  isbn,
-  title,
-  author,
-  publishedDate,
-  pages,
-  publishingHouse,
-  type,
-  cover,
-) {
+export async function saveBook(book) {
 
   await db.books.put({
-    id: 1,
-    isbn,
-    title,
-    author,
-    publishedDate,
-    pages,
-    publishingHouse,
-    type,
-    cover,
+    isbn: book.isbn,
+    title: book.title,
+    author: book.author,
+    publishedDate: book.publishedDate,
+    pages: book.pages,
+    publishingHouse: book.publishingHouse,
+    type: book.type,
+    cover: book.cover,
   })
+
+}
+
+export async function getBooks() {
+  const books =  await db.books.toArray()
+
+  return books.map((book) => ({
+    ...book,
+    coverUrl: book.cover
+      ? URL.createObjectURL(book.cover)
+      : null
+  }))
 }
 
 export async function getBook(id) {
