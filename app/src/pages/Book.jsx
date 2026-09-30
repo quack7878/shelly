@@ -239,7 +239,7 @@ export default function Home() {
           >
             {
               types.map( type => 
-                <MenuItem id={type.id} value={type.type}>{t({type.type})}</MenuItem>
+                <MenuItem id={type.id} value={type.type}>{t(type.type)}</MenuItem>
               )
             }
           </Select>
