@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem'
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { useForm } from '@tanstack/react-form'
 import dayjs from 'dayjs'
 import 'dayjs/locale/fr'
 import 'dayjs/locale/en'
@@ -49,6 +50,8 @@ export default function Home() {
 
   const [locale, setLocale] = useState(frFR)
 
+  const [errors, setErrors] = useState([])
+
   const locales = {
     'fr': frFR,
     'en': enUS
@@ -80,15 +83,31 @@ export default function Home() {
     }
   }, [book.cover])
 
+  const form = useForm({
+    defaultValues: {
+      title: book.title,
+      isbn: book.isbn,
+      pages: book.pages,
+      author: book.author,
+      publishingHouse: book.publishingHouse,
+      type: book.type,
+      publishingDate: book.publishingDate
+    },
+    onSubmit: async ({ value }) => {
+      console.log(book)
+    },
+  })
+
   async function handleSubmit(event) {
     event.preventDefault()
 
-    saveBook(book)
+    //saveBook(book)
 
   }
 
   function updateBook(field, event) {
     setBook(new Book({...book, [field]: event.target.value}))
+    validateBook()
   }
 
   function handleCardClick() {
@@ -104,6 +123,33 @@ export default function Home() {
 
   }
 
+  function isEmpty(value) {
+    return (value.trim().length === 0)
+  }
+
+  function isValidIsbn(isbn) {
+    const cleaned = isbn.replace(/[-\s]/g, "");
+
+    return (
+      /^\d{13}$/.test(cleaned) ||
+      /^\d{9}[\dXx]$/.test(cleaned)
+    )
+  }
+
+  function validateBook() {
+    isEmpty(book.title) ? updateErrors('title', false) : updateErrors('title', true)
+  }
+
+  function updateErrors(field, remove) {
+    if (remove) {
+  console.log('remove')
+      setErrors(errors.filter((error) => error != field))
+    }
+    else {
+      errors.includes(field) ? null : setErrors([...errors, field])
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -117,8 +163,6 @@ export default function Home() {
         gap: 4,
         paddingTop: 2,
       }}
-      component='form'
-      onSubmit={handleSubmit}
     >
       <Box sx={{ mb: 4 }}>
         <Typography
@@ -158,124 +202,147 @@ export default function Home() {
           />
         </CardActionArea>
 
-        <TextField
-          fullWidth
-          value={book.title}
-          onChange={(event) => updateBook('title', event)}
-          label={t('title')}
-          variant='outlined'
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: 3,
-            },
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            form.handleSubmit()
           }}
-        />
-
-        <TextField
-          fullWidth
-          value={book.isbn}
-          onChange={(event) => updateBook('isbn', event)}
-          label='ISBN'
-          variant='outlined'
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: 3,
-            },
-          }}
-        />
-
-        <TextField
-          fullWidth
-          value={book.pages}
-          onChange={(event) => updateBook('pages', event)}
-          label={t('pages')}
-          variant='outlined'
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: 3,
-            },
-          }}
-        />
-
-        <TextField
-          fullWidth
-          value={book.author}
-          onChange={(event) => updateBook('author', event)}
-          label={t('author')}
-          variant='outlined'
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: 3,
-            },
-          }}
-        />
-
-        <TextField
-          fullWidth
-          value={book.publishingHouse ?? ''}
-          onChange={(event) => updateBook('publishingHouse', event)}
-          label={t('publishing-house')}
-          variant='outlined'
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: 3,
-            },
-          }}
-        />
-
-        <FormControl sx={{ width: '100%', }}>
-          <InputLabel id='select-type-label'>
-            {t('type')}
-          </InputLabel>
-          <Select
-            labelId='select-type-label'
-            id='select-type'
-            label={t('type')}
-            value={book.type ?? 'ebook'}
-            onChange={(event) => updateBook('type', event)}
-            sx={{
-              width: '100%',
-            }}
-          >
-            {
-              types.map( type => 
-                <MenuItem id={type.id} value={type.type}>{t(type.type)}</MenuItem>
-              )
-            }
-          </Select>
-        </FormControl>
-        
-        <LocalizationProvider 
-          dateAdapter={AdapterDayjs} 
-          adapterLocale={language} 
-          localeText={locale.components.MuiLocalizationProvider.defaultProps.localeText}
         >
-
-          <MobileDatePicker
-            label={t('publishing-date')}
-            closeOnSelect={true}
-            value={dayjs(book.publishedDate) ?? null}
-            format='YYYY/MM/DD'
-            onChange={(value) => updateBook('publishedDate', value ? value.format("YYYY-MM-DD") : null)}
-            sx={{
-              width: '100%',
+          <form.Field
+            name='title'
+            validators={{
+              onChange: ({ value }) =>
+                updateBook('title', value)
+            }}
+            children={(field) => {
+              return (
+                <>
+                  <TextField
+                    fullWidth
+                    error={isEmpty(book.title)}
+                    helperText={isEmpty(book.title) ? t('empty') : ''}
+                    value={book.title}
+                    onChange={(event) => field.handleChange(event)}
+                    label={t('title')}
+                    variant='outlined'
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 3,
+                      },
+                    }}
+                  />
+                </>
+              )
             }}
           />
-        </LocalizationProvider>
 
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{
-            px: { xs: 2, sm: 4 },
-            borderRadius: 3,
-            textTransform: 'none',
-            fontWeight: 700,
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {t('save')}
-        </Button>
+          <TextField
+            fullWidth
+            value={book.isbn}
+            onChange={(event) => updateBook('isbn', event)}
+            label='ISBN'
+            variant='outlined'
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 3,
+              },
+            }}
+          />
+
+          <TextField
+            fullWidth
+            value={book.pages}
+            onChange={(event) => updateBook('pages', event)}
+            label={t('pages')}
+            variant='outlined'
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 3,
+              },
+            }}
+          />
+
+          <TextField
+            fullWidth
+            value={book.author}
+            onChange={(event) => updateBook('author', event)}
+            label={t('author')}
+            variant='outlined'
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 3,
+              },
+            }}
+          />
+
+          <TextField
+            fullWidth
+            value={book.publishingHouse ?? ''}
+            onChange={(event) => updateBook('publishingHouse', event)}
+            label={t('publishing-house')}
+            variant='outlined'
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 3,
+              },
+            }}
+          />
+
+          <FormControl sx={{ width: '100%', }}>
+            <InputLabel id='select-type-label'>
+              {t('type')}
+            </InputLabel>
+            <Select
+              labelId='select-type-label'
+              id='select-type'
+              label={t('type')}
+              value={book.type ?? 'ebook'}
+              onChange={(event) => updateBook('type', event)}
+              sx={{
+                width: '100%',
+              }}
+            >
+              {
+                types.map( type => 
+                  <MenuItem id={type.id} value={type.type}>{t(type.type)}</MenuItem>
+                )
+              }
+            </Select>
+          </FormControl>
+          
+          <LocalizationProvider 
+            dateAdapter={AdapterDayjs} 
+            adapterLocale={language} 
+            localeText={locale.components.MuiLocalizationProvider.defaultProps.localeText}
+          >
+
+            <MobileDatePicker
+              label={t('publishing-date')}
+              closeOnSelect={true}
+              value={dayjs(book.publishedDate) ?? null}
+              format='YYYY/MM/DD'
+              onChange={(value) => updateBook('publishedDate', value ? value.format("YYYY-MM-DD") : null)}
+              sx={{
+                width: '100%',
+              }}
+            />
+          </LocalizationProvider>
+
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              px: { xs: 2, sm: 4 },
+              borderRadius: 3,
+              textTransform: 'none',
+              fontWeight: 700,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {t('save')}
+          </Button>
+        </form>
     </Box>
   )
 }

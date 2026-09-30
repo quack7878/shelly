@@ -32,6 +32,7 @@ const resources = {
       'signed': 'Signed',
       'select-date': 'Select a date',
       'books-search-error': 'Unable to load books. Please try again.',
+      'empty': 'Can\'t be empty',
     }
   },
   fr: {
@@ -64,6 +65,7 @@ const resources = {
       'signed': 'Signé',
       'select-date': 'Choisir une date',
       'books-search-error': 'Impossible de charger les livres. Réessayez plus tard.',
+      'empty': 'Ne peut être vide',
     }
   }
 }
