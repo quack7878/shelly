@@ -2,6 +2,7 @@ import { useState, Form, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import FormControl from '@mui/material/FormControl'
+import FormHelperText from '@mui/material/FormHelperText'
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
@@ -50,8 +51,6 @@ export default function Home() {
 
   const [locale, setLocale] = useState(frFR)
 
-  const [errors, setErrors] = useState([])
-
   const locales = {
     'fr': frFR,
     'en': enUS
@@ -72,59 +71,35 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
+    readerFile(book.cover)
+  }, [book.cover])
+
+  const form = useForm({
+    defaultValues: {
+      title: book.title ?? '',
+      isbn: book.isbn ?? '',
+      pages: book.pages ?? 0,
+      author: book.author ?? '',
+      publishingHouse: book.publishingHouse ?? '',
+      type: book.type,
+      publishedDate: book.publishedDate ?? '',
+      cover: book.cover ?? ''
+    },
+    onSubmit: async ({ value }) => {
+      saveBook(new Book(value))
+    },
+  })
+
+  function readerFile(value) {
     const reader = new FileReader()
 
     reader.onload = () => {
       setImagePreview(reader.result)
     }
 
-    if (book.cover) {
-      reader.readAsDataURL(book.cover)
+    if (value) {
+      reader.readAsDataURL(value)
     }
-  }, [book.cover])
-
-  const form = useForm({
-    defaultValues: {
-      title: book.title,
-      isbn: book.isbn,
-      pages: book.pages,
-      author: book.author,
-      publishingHouse: book.publishingHouse,
-      type: book.type,
-      publishingDate: book.publishingDate
-    },
-    onSubmit: async ({ value }) => {
-      console.log(book)
-    },
-  })
-
-  async function handleSubmit(event) {
-    event.preventDefault()
-
-    //saveBook(book)
-
-  }
-
-  function updateBook(field, event) {
-    setBook(new Book({...book, [field]: event.target.value}))
-    validateBook()
-  }
-
-  function handleCardClick() {
-    imageRef.current?.click()
-  }
-
-  const handleFileChange = (event) => {
-    const file = event.target.files?.[0]
-
-    if (!file) return
-
-    setBook(new Book({...book, cover: file}))
-
-  }
-
-  function isEmpty(value) {
-    return (value.trim().length === 0)
   }
 
   function isValidIsbn(isbn) {
@@ -134,20 +109,6 @@ export default function Home() {
       /^\d{13}$/.test(cleaned) ||
       /^\d{9}[\dXx]$/.test(cleaned)
     )
-  }
-
-  function validateBook() {
-    isEmpty(book.title) ? updateErrors('title', false) : updateErrors('title', true)
-  }
-
-  function updateErrors(field, remove) {
-    if (remove) {
-  console.log('remove')
-      setErrors(errors.filter((error) => error != field))
-    }
-    else {
-      errors.includes(field) ? null : setErrors([...errors, field])
-    }
   }
 
   return (
@@ -177,54 +138,99 @@ export default function Home() {
         </Typography>
       </Box>
 
-        <CardActionArea onClick={handleCardClick} sx={{ display: 'flex' }}>
-          <Box
-            component="img"
-            src={imagePreview}
-            alt={book.title}
-            sx={{
-              width: 90,
-              height: 130,
-              objectFit: 'cover',
-              borderRadius: 2,
-              flexShrink: 0,
-              bgcolor: 'background.default',
-              display: 'flex'
-            }}
-          >
-          </Box>
-          <input 
-            type="file" 
-            accept='image/*'
-            ref={imageRef}
-            style= {{ display: 'none' }}
-            onChange={handleFileChange}
-          />
-        </CardActionArea>
-
         <form
           onSubmit={(e) => {
             e.preventDefault()
             e.stopPropagation()
             form.handleSubmit()
           }}
+          style={{ gap: 30, display: 'flex', flexDirection: 'column', flexGrow: 1, alignSelf: 'stretch' }}
         >
+
+          <form.Field
+            name='cover'
+            validators={{
+              onChange: ({ value }) => {
+
+                if (value.size > 5 * 1024 * 1024 ) {
+                  return t('file-too-large')
+                }
+
+                return undefined
+              }
+            }}
+            children={(field) => (
+              <CardActionArea 
+                onClick={() => 
+                  document.getElementById('book-image-input').click()
+                } 
+                sx={{ display: 'flex' }}
+              >
+                <Box
+                  component='img'
+                  src={imagePreview}
+                  sx={{
+                    width: 90,
+                    height: 130,
+                    objectFit: 'cover',
+                    borderRadius: 2,
+                    flexShrink: 0,
+                    bgcolor: 'background.default',
+                    display: 'flex'
+                  }}
+                >
+                </Box>
+
+                <input 
+                  id='book-image-input'
+                  type="file" 
+                  accept='image/*'
+                  hidden
+                  onChange={(event) => {
+                    const file = event.target.files?.[0] ?? null
+
+                    if (file) {
+                      readerFile(file)
+                      field.handleChange(file)
+                    }
+                  }}
+                />
+
+                {field.state.meta.errors.length > 0 && (
+                  <FormHelperText error>
+                    {field.state.meta.errors[0]} 
+                  </FormHelperText>
+                )}
+              </CardActionArea>
+            )}
+          >
+          </form.Field>
+
           <form.Field
             name='title'
             validators={{
-              onChange: ({ value }) =>
-                updateBook('title', value)
+              onChange: ({ value }) => {
+                return !value.trim() ? t('empty') : undefined
+              }
             }}
             children={(field) => {
               return (
                 <>
                   <TextField
                     fullWidth
-                    error={isEmpty(book.title)}
-                    helperText={isEmpty(book.title) ? t('empty') : ''}
-                    value={book.title}
-                    onChange={(event) => field.handleChange(event)}
+                    name={field.name}
                     label={t('title')}
+                    value={field.state.value}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    error={
+                      field.state.meta.isTouched && 
+                      field.state.meta.errors.length > 0
+                    }
+                    helperText={
+                      field.state.meta.isTouched 
+                        ? field.state.meta.errors[0]
+                        : ''
+                    }
                     variant='outlined'
                     sx={{
                       '& .MuiOutlinedInput-root': {
@@ -235,113 +241,244 @@ export default function Home() {
                 </>
               )
             }}
-          />
+          >
+          </form.Field>
 
-          <TextField
-            fullWidth
-            value={book.isbn}
-            onChange={(event) => updateBook('isbn', event)}
-            label='ISBN'
-            variant='outlined'
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 3,
-              },
-            }}
-          />
+          <form.Field
+            name='isbn'
+            validators={{
+              onChange: ({ value }) => {
+                if (!value.trim()) {
+                  return t('empty')
+                }
 
-          <TextField
-            fullWidth
-            value={book.pages}
-            onChange={(event) => updateBook('pages', event)}
-            label={t('pages')}
-            variant='outlined'
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 3,
-              },
-            }}
-          />
+                if(!isValidIsbn(value)) {
+                  return t('invalid-isbn') 
+                }
 
-          <TextField
-            fullWidth
-            value={book.author}
-            onChange={(event) => updateBook('author', event)}
-            label={t('author')}
-            variant='outlined'
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 3,
-              },
-            }}
-          />
+                return undefined
 
-          <TextField
-            fullWidth
-            value={book.publishingHouse ?? ''}
-            onChange={(event) => updateBook('publishingHouse', event)}
-            label={t('publishing-house')}
-            variant='outlined'
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 3,
-              },
-            }}
-          />
-
-          <FormControl sx={{ width: '100%', }}>
-            <InputLabel id='select-type-label'>
-              {t('type')}
-            </InputLabel>
-            <Select
-              labelId='select-type-label'
-              id='select-type'
-              label={t('type')}
-              value={book.type ?? 'ebook'}
-              onChange={(event) => updateBook('type', event)}
-              sx={{
-                width: '100%',
-              }}
-            >
-              {
-                types.map( type => 
-                  <MenuItem id={type.id} value={type.type}>{t(type.type)}</MenuItem>
-                )
               }
-            </Select>
-          </FormControl>
-          
-          <LocalizationProvider 
-            dateAdapter={AdapterDayjs} 
-            adapterLocale={language} 
-            localeText={locale.components.MuiLocalizationProvider.defaultProps.localeText}
-          >
-
-            <MobileDatePicker
-              label={t('publishing-date')}
-              closeOnSelect={true}
-              value={dayjs(book.publishedDate) ?? null}
-              format='YYYY/MM/DD'
-              onChange={(value) => updateBook('publishedDate', value ? value.format("YYYY-MM-DD") : null)}
-              sx={{
-                width: '100%',
-              }}
-            />
-          </LocalizationProvider>
-
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              px: { xs: 2, sm: 4 },
-              borderRadius: 3,
-              textTransform: 'none',
-              fontWeight: 700,
-              whiteSpace: 'nowrap',
+            }}
+            children={(field) => {
+              return (
+                <>
+                  <TextField
+                    fullWidth
+                    name={field.name}
+                    label='ISBN'
+                    value={field.state.value}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    error={
+                      field.state.meta.isTouched && 
+                      field.state.meta.errors.length > 0
+                    }
+                    helperText={
+                      field.state.meta.isTouched 
+                        ? field.state.meta.errors[0]
+                        : ''
+                    }
+                    variant='outlined'
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 3,
+                      },
+                    }}
+                  />
+                </>
+              )
             }}
           >
-            {t('save')}
-          </Button>
+          </form.Field>
+
+          <form.Field
+            name='pages'
+            validators={{
+              onChange: ({ value }) => {
+
+                if (value == '') {
+                  return t('empty')
+                }
+
+                if(isNaN(value)) {
+                  return t('invalid-number') 
+                }
+
+                return undefined
+
+              }
+            }}
+            children={(field) => {
+              return (
+                <>
+                  <TextField
+                    fullWidth
+                    name={field.name}
+                    label={t('pages')}
+                    value={field.state.value}
+                    onChange={(event) => {
+                      if (Number(event.target.value)) {
+                        field.handleChange(Number(event.target.value))
+                      }
+                      else {
+                        field.handleChange(event.target.value)
+                      }
+                    }}
+                    error={
+                      field.state.meta.isTouched && 
+                      field.state.meta.errors.length > 0
+                    }
+                    helperText={
+                      field.state.meta.isTouched 
+                        ? field.state.meta.errors[0]
+                        : ''
+                    }
+                    variant='outlined'
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 3,
+                      },
+                    }}
+                  />
+                </>
+              )
+            }}
+          >
+          </form.Field>
+
+          <form.Field
+            name='author'
+            children={(field) => {
+              return (
+                <>
+                  <TextField
+                    fullWidth
+                    name={field.name}
+                    label={t('author')}
+                    value={field.state.value}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    variant='outlined'
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 3,
+                      },
+                    }}
+                  />
+                </>
+              )
+            }}
+          >
+          </form.Field>
+
+          <form.Field
+            name='publishingHouse'
+            children={(field) => {
+              return (
+                <>
+                  <TextField
+                    fullWidth
+                    name={field.name}
+                    label={t('publishing-house')}
+                    value={field.state.value}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    variant='outlined'
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 3,
+                      },
+                    }}
+                  />
+                </>
+              )
+            }}
+          >
+          </form.Field>
+
+          <form.Field
+            name='type'
+            children={(field) => {
+              return (
+                <>
+                  <FormControl sx={{ width: '100%', }}>
+                    <InputLabel id='select-type-label'>
+                      {t('type')}
+                    </InputLabel>
+                    <Select
+                      labelId='select-type-label'
+                      id='select-type'
+                      label={t('type')}
+                      value={field.state.value}
+                      onChange={(event) => field.handleChange(event.target.value)}
+                      sx={{
+                        width: '100%',
+                      }}
+                    >
+                      {
+                        types.map( type => 
+                          <MenuItem id={type.id} value={type.type}>{t(type.type)}</MenuItem>
+                        )
+                      }
+                    </Select>
+                  </FormControl>
+                </>
+              )
+            }}
+          >
+          </form.Field>
+
+          
+          <form.Field
+            name='publishedDate'
+            children={(field) => {
+              return (
+                <>
+                  <LocalizationProvider 
+                    dateAdapter={AdapterDayjs} 
+                    adapterLocale={language} 
+                    localeText={locale.components.MuiLocalizationProvider.defaultProps.localeText}
+                  >
+
+                    <MobileDatePicker
+                      label={t('publishing-date')}
+                      closeOnSelect={true}
+                      value={dayjs(field.state.value) ?? null}
+                      format='YYYY/MM/DD'
+                      onChange={(value) => field.handleChange(value ? value.format('YYYY-MM-DD') : null)}
+                      sx={{
+                        width: '100%',
+                      }}
+                    />
+                  </LocalizationProvider>
+                </>
+              )
+            }}
+          >
+          </form.Field>
+
+          <form.Subscribe
+            selector={(state) => ({
+              canSubmit: state.canSubmit,
+              isSubmitting: state.isSubmitting,
+            })}
+          >
+            {({ canSubmit, isSubmitting }) => (
+              <Button
+                type='submit'
+                variant='contained'
+                disabled={!canSubmit || isSubmitting}
+                sx={{
+                  px: { xs: 2, sm: 4 },
+                  borderRadius: 3,
+                  textTransform: 'none',
+                  fontWeight: 700,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {isSubmitting ? "Saving..." : t("save")}
+              </Button>
+            )}
+          </form.Subscribe>
+
         </form>
     </Box>
   )

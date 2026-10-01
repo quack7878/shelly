@@ -33,6 +33,9 @@ const resources = {
       'select-date': 'Select a date',
       'books-search-error': 'Unable to load books. Please try again.',
       'empty': 'Can\'t be empty',
+      'file-too-large': 'File too large',
+      'invalid-isbn': 'Invalid ISBN',
+      'invalid-number': 'Invalid number',
     }
   },
   fr: {
@@ -66,6 +69,9 @@ const resources = {
       'select-date': 'Choisir une date',
       'books-search-error': 'Impossible de charger les livres. Réessayez plus tard.',
       'empty': 'Ne peut être vide',
+      'file-too-large': 'Fichier trop lourd',
+      'invalid-isbn': 'ISBN invalide',
+      'invalid-number': 'Nombre invalide',
     }
   }
 }
