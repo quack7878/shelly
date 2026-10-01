@@ -3,7 +3,7 @@ import Dexie from 'dexie'
 const db = new Dexie('ShellyDatabase')
 
 db.version(1).stores({
-  books: '++id, isbn, title, author, publishedDate, pages, publishingHouse, type, cover ',
+  books: '++id, isbn, title, author, publishedDate, pages, publishingHouse, type, status, cover ',
   preferences: 'id, value',
   status: '++id, status',
   type: '++id, type',

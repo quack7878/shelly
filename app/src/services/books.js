@@ -98,6 +98,7 @@ export async function saveBook(book) {
     pages: book.pages,
     publishingHouse: book.publishingHouse,
     type: book.type,
+    status: book.status,
     cover: book.cover,
   })
 

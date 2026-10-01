@@ -9,6 +9,7 @@ export class Book {
     publishingHouse,
     cover,
     type = 'ebook',
+    status = 'toRead'
   }) {
     this.isbn = isbn
     this.title = title
@@ -18,18 +19,7 @@ export class Book {
     this.publishingHouse = publishingHouse
     this.cover = cover
     this.type = type
+    this.status = status
   }
 
-  get data() {
-    return {
-      isbn: this.isbn,
-      title: this.title,
-      author: this.author,
-      publishedDate: this.publishedDate,
-      pages: this.pages,
-      publishingHouse: this.publishingHouse,
-      cover: this.cover,
-      type: this.type
-    }
-  }
 }

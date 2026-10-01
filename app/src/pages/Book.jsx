@@ -17,6 +17,7 @@ import { get } from '../services/preferences'
 import { getBookCoverBlob } from '../services/covers'
 import { saveBook } from '../services/books'
 import { getTypes } from '../services/types'
+import { getStatuses } from '../services/statuses'
 import { Book } from '../models/Book'
 
 import {
@@ -46,6 +47,7 @@ export default function Home() {
   const [imagePreview, setImagePreview] = useState()
   const [book, setBook] = useState(() => new Book(state?.book))
   const [types, setTypes] = useState([])
+  const [statuses, setStatuses] = useState([])
   const [language, setLanguage] = useState('')
   const imageRef = useRef(null)
 
@@ -65,6 +67,7 @@ export default function Home() {
       setLocale(locales[l])
       setBook(new Book({...book, cover: await getBookCoverBlob(state?.book.coverUrl)}))
       setTypes(await getTypes())
+      setStatuses(await getStatuses())
     }
 
     init()
@@ -82,6 +85,7 @@ export default function Home() {
       author: book.author ?? '',
       publishingHouse: book.publishingHouse ?? '',
       type: book.type,
+      status: book.status,
       publishedDate: book.publishedDate ?? '',
       cover: book.cover ?? ''
     },
@@ -426,6 +430,37 @@ export default function Home() {
           >
           </form.Field>
 
+          <form.Field
+            name='status'
+            children={(field) => {
+              return (
+                <>
+                  <FormControl sx={{ width: '100%', }}>
+                    <InputLabel id='select-status-label'>
+                      Status
+                    </InputLabel>
+                    <Select
+                      labelId='select-status-label'
+                      id='select-status'
+                      label='Status'
+                      value={field.state.value}
+                      onChange={(event) => field.handleChange(event.target.value)}
+                      sx={{
+                        width: '100%',
+                      }}
+                    >
+                      {
+                        statuses.map( status => 
+                          <MenuItem id={status.id} value={status.status}>{t(status.status)}</MenuItem>
+                        )
+                      }
+                    </Select>
+                  </FormControl>
+                </>
+              )
+            }}
+          >
+          </form.Field>
           
           <form.Field
             name='publishedDate'

@@ -36,6 +36,11 @@ const resources = {
       'file-too-large': 'File too large',
       'invalid-isbn': 'Invalid ISBN',
       'invalid-number': 'Invalid number',
+      'toRead': 'To read',
+      'reading': 'Reading',
+      'read': 'Read',
+      'abandoned': 'Abandoned',
+      'paused': 'Paused',
     }
   },
   fr: {
@@ -72,6 +77,11 @@ const resources = {
       'file-too-large': 'Fichier trop lourd',
       'invalid-isbn': 'ISBN invalide',
       'invalid-number': 'Nombre invalide',
+      'toRead': 'À lire',
+      'reading': 'En cours de lecture',
+      'read': 'Lu',
+      'abandoned': 'Abandonné',
+      'paused': 'En pause',
     }
   }
 }
