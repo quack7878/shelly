@@ -14,7 +14,7 @@ function App() {
       <main style={{ display: 'flex', flexGrow: 1, flexDirection: 'column'}} >
         <Container sx={{ bgcolor: 'background.default', display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 0 }}>
             <BrowserRouter basename='/'>
-              <Container sx={{ bgcolor: 'background.default', display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 0, padding-bottom: 7 }}>
+              <Container sx={{ bgcolor: 'background.default', display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 0, paddingBottom: 7 }}>
                 <Routes>
                   <Route path='/' element={<Home />} />
                   <Route path='/settings' element={<Settings />} />
