@@ -41,6 +41,9 @@ const resources = {
       'read': 'Read',
       'abandoned': 'Abandoned',
       'paused': 'Paused',
+      'home': 'Home',
+      'search': 'Search',
+      'settings': 'Settings',
     }
   },
   fr: {
@@ -82,6 +85,9 @@ const resources = {
       'read': 'Lu',
       'abandoned': 'Abandonné',
       'paused': 'En pause',
+      'home': 'Accueil',
+      'search': 'Recherche',
+      'settings': 'Réglages',
     }
   }
 }
