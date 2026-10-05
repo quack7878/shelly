@@ -40,7 +40,7 @@ import {
   frFR,
 } from '@mui/x-date-pickers/locales'
 
-export default function Home() {
+export default function BookPage() {
 
   const { t, i18n } = useTranslation()
   const { state } = useLocation()

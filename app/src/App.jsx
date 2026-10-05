@@ -5,7 +5,7 @@ import Settings from './pages/Settings'
 import Search from './pages/Search'
 import NavBar from './pages/Navbar'
 import CustomTheme from './theme/CustomTheme'
-import Book from './pages/Book'
+import BookPage from './pages/Book'
 
 function App() {
 
@@ -19,7 +19,7 @@ function App() {
                   <Route path='/' element={<Home />} />
                   <Route path='/settings' element={<Settings />} />
                   <Route path='/search' element={<Search />} />
-                  <Route path='/book' element={<Book />} />
+                  <Route path='/book' element={<BookPage />} />
                 </Routes>
               </Container>
               <NavBar></NavBar>

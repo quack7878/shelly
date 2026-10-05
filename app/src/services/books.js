@@ -1,6 +1,7 @@
 import { db } from '../db'
 import { get } from './preferences'
 import { Book } from '../models/Book'
+import { getBookCoverBlob } from './covers.js'
 
 export async function searchBooks(query) {
     const api = await get('api')
@@ -44,7 +45,7 @@ async function searchGoogleBooks(query, googleKey) {
 
   const data = await response.json()
 
-  const books = data.items.map(mapGoogleBook)
+  const books = await Promise.all(data.items.map(mapGoogleBook))
 
   return books
 }
@@ -65,7 +66,7 @@ function mapOpenLibraryBook(doc) {
 
 }
 
-function mapGoogleBook(book) {
+async function mapGoogleBook(book) {
   const info = book.volumeInfo ?? {}
 
   const isbn10 = info.industryIdentifiers?.find(
@@ -77,15 +78,15 @@ function mapGoogleBook(book) {
   )?.identifier
 
   const authors = info.authors ?? undefined
-  return {
-    title: info.title ?? null,
-    author: authors ? authors[0] : null,
-    isbn: isbn13 ?? isbn10 ?? null,
-    coverUrl: info.imageLinks?.thumbnail?.replace(/^http:/, 'https:') ?? null,
-    pages: info.pageCount ?? null,
-    publishedDate: info.publishedDate ?? null,
-    publishingHouse: info.publisher ?? null,
-  }
+  return new Book ({
+   isbn: isbn13 ?? isbn10 ?? null,
+   title: info.title ?? null,
+   author: authors ? authors[0] : null,
+   publishedDate: info.publishedDate ?? null,
+   pages: info.pageCount ?? null,
+   publishingDate: info.publisher ?? null,
+   cover: await getBookCoverBlob(info.imageLinks?.thumbnail?.replace(/^http:/, 'https:')) ?? null,
+  })
 }
 
 export async function saveBook(book) {
