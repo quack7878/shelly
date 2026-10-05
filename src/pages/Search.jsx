@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { searchBooks } from '../services/books'
 import { useTranslation } from 'react-i18next'
-import { save, get } from '../services/preferences'
+import { get } from '../services/preferences'
 import { useNavigate } from 'react-router-dom'
 
 import {
@@ -10,10 +10,8 @@ import {
   Button,
   Card,
   CardContent,
-  CardMedia,
   CardActionArea,
   CircularProgress,
-  Grid,
   InputAdornment,
   TextField,
   Typography,

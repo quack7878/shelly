@@ -1,7 +1,6 @@
 import { db } from '../db'
 import { get } from './preferences'
 import { Book } from '../models/Book'
-import { getBookCoverBlob } from './covers.js'
 
 const MAX = '2'
 
