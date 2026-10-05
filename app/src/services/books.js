@@ -25,7 +25,7 @@ async function searchOpenLibrary(query) {
     .then(response => response.json())
     .catch(error => console.error('Error:', error))
 
-  const books = response.docs.map(mapOpenLibraryBook)
+  const books = await Promise.all(response.docs.map(mapOpenLibraryBook))
 
   return books
 }
@@ -50,19 +50,19 @@ async function searchGoogleBooks(query, googleKey) {
   return books
 }
 
-function mapOpenLibraryBook(doc) {
+async function mapOpenLibraryBook(doc) {
   const workId = doc.key?.replace('/works/', '')
   const editionId = doc.edition_key?.[0]
 
-  return {    
+  return new Book({    
     isbn: doc.isbn?.[0],
     title: doc.title ?? 'Untitled',
-    coverUrl: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-S.jpg` : undefined,
-    pages: doc.number_of_pages_median,
     author: doc.author_name?.join(', '),
     publishedDate: doc.first_publish_year ? new Date(`${doc.first_publish_year}-01-01`) : undefined,
+    pages: doc.number_of_pages_median,
     publishingHouse: doc.publisher?.[0],
-  }
+    cover: doc.cover_i ? await getBookCoverBlob(`https://covers.openlibrary.org/b/id/${doc.cover_i}-S.jpg`) : undefined,
+  })
 
 }
 

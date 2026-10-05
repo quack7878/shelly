@@ -71,12 +71,9 @@ class MySinatraApp < Sinatra::Base
     end 
 
     get "/api/cover/openlibrary" do
-      query = params["q"]
+      u = params["url"]
 
-      response = Faraday.get("https://openlibrary.org/search.json") do |request|
-        request.params["q"] = query
-        request.params["limit"] = 2
-        request.params["fields"] = "title,author_name,isbn,cover_i,number_of_pages_median,first_publish_year,publisher,key,edition_key,first_sentence"
+      response = Faraday.get(u) do |request|
       end
 
       response.body

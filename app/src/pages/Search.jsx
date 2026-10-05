@@ -61,6 +61,7 @@ export default function Search() {
   }
 
   function BookCard({book, index}) {
+    console.log(book)
     const [cover, setCover] = useState('')
     const reader = new FileReader()
 
