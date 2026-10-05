@@ -4,17 +4,9 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import {
-  Alert,
   Box,
-  Button,
   Card,
   CardContent,
-  CardMedia,
-  CardActionArea,
-  CircularProgress,
-  Grid,
-  InputAdornment,
-  TextField,
   Typography,
 } from '@mui/material'
 

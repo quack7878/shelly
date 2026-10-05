@@ -14,10 +14,7 @@ import BedtimeIcon from '@mui/icons-material/Bedtime'
 import {
   Box,
   Button,
-  CircularProgress,
-  InputAdornment,
   TextField,
-  Typography,
 } from '@mui/material'
 
 function Settings() {

@@ -1,4 +1,4 @@
-import { useState, Form, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import FormControl from '@mui/material/FormControl'
@@ -14,23 +14,15 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/fr'
 import 'dayjs/locale/en'
 import { get } from '../services/preferences'
-import { getBookCoverBlob } from '../services/covers'
 import { saveBook } from '../services/books'
 import { getTypes } from '../services/types'
 import { getStatuses } from '../services/statuses'
 import { Book } from '../models/Book'
 
 import {
-  Alert,
   Box,
   Button,
-  Card,
-  CardContent,
-  CardMedia,
   CardActionArea,
-  CircularProgress,
-  Grid,
-  InputAdornment,
   TextField,
   Typography,
 } from '@mui/material'
