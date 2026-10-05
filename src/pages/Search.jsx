@@ -61,24 +61,9 @@ export default function Search() {
   }
 
   function BookCard({book, index}) {
-    console.log(book)
-    const [cover, setCover] = useState('')
-    const reader = new FileReader()
-
-    useEffect(() => {
-      reader.onload = () => {
-        setCover(reader.result)
-      }
-
-      if (book.cover) {
-        reader.readAsDataURL(book.cover)
-      }
-      
-    }, [])
-
     return (
       <Card
-        key={book.id || index}
+        key={index}
         sx={{
           display: 'flex',
           alignItems: 'flex-start',
@@ -96,7 +81,7 @@ export default function Search() {
         <CardActionArea onClick={() => navigate('/book', { state: { book } })} sx={{ display: 'flex', justifyContent: 'spaceAround',  }}>
           <Box
             component="img"
-            src={cover}
+            src={book.cover}
             sx={{
               width: 90,
               height: 130,
@@ -246,6 +231,7 @@ export default function Search() {
         {books.map((book, index) => (
           <BookCard
             index={index}
+            key={index}
             book={book}
           />
         ))

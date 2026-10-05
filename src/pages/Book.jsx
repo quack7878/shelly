@@ -49,7 +49,6 @@ export default function BookPage() {
   const [types, setTypes] = useState([])
   const [statuses, setStatuses] = useState([])
   const [language, setLanguage] = useState('')
-  const imageRef = useRef(null)
 
   const [locale, setLocale] = useState(frFR)
 
@@ -65,16 +64,20 @@ export default function BookPage() {
       setLanguage(l)
 
       setLocale(locales[l])
-      setBook(new Book({...book, cover: await getBookCoverBlob(state?.book.coverUrl)}))
       setTypes(await getTypes())
       setStatuses(await getStatuses())
+      setImagePreview(book.cover)
     }
 
     init()
   }, [])
 
   useEffect(() => {
-    readerFile(book.cover)
+    const isUrl = typeof book.cover === 'string' && book.cover.startsWith('https:')
+
+    if (!isUrl) {
+      readerFile(book.cover)
+    }
   }, [book.cover])
 
   const form = useForm({
@@ -84,8 +87,8 @@ export default function BookPage() {
       pages: book.pages ?? 0,
       author: book.author ?? '',
       publishingHouse: book.publishingHouse ?? '',
-      type: book.type,
-      status: book.status,
+      type: book.type ?? 'ebook',
+      status: book.status ?? 'toRead',
       publishedDate: book.publishedDate ?? '',
       cover: book.cover ?? ''
     },
@@ -97,6 +100,7 @@ export default function BookPage() {
   function readerFile(value) {
     const reader = new FileReader()
 
+    console.log(value)
     reader.onload = () => {
       setImagePreview(reader.result)
     }
@@ -407,22 +411,24 @@ export default function BookPage() {
                     <InputLabel id='select-type-label'>
                       {t('type')}
                     </InputLabel>
-                    <Select
-                      labelId='select-type-label'
-                      id='select-type'
-                      label={t('type')}
-                      value={field.state.value}
-                      onChange={(event) => field.handleChange(event.target.value)}
-                      sx={{
-                        width: '100%',
-                      }}
-                    >
-                      {
-                        types.map( type => 
-                          <MenuItem id={type.id} value={type.type}>{t(type.type)}</MenuItem>
-                        )
-                      }
-                    </Select>
+                    {types.length > 0 && (
+                      <Select
+                        labelId='select-type-label'
+                        id='select-type'
+                        label={t('type')}
+                        value={field.state.value ?? ''}
+                        onChange={(event) => field.handleChange(event.target.value)}
+                        sx={{
+                          width: '100%',
+                        }}
+                      >
+                        {types.map((type) => (
+                          <MenuItem key={type.id} value={type.type}>
+                            {t(type.type)}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    )}
                   </FormControl>
                 </>
               )
@@ -439,22 +445,24 @@ export default function BookPage() {
                     <InputLabel id='select-status-label'>
                       Status
                     </InputLabel>
-                    <Select
-                      labelId='select-status-label'
-                      id='select-status'
-                      label='Status'
-                      value={field.state.value}
-                      onChange={(event) => field.handleChange(event.target.value)}
-                      sx={{
-                        width: '100%',
-                      }}
-                    >
-                      {
-                        statuses.map( status => 
-                          <MenuItem id={status.id} value={status.status}>{t(status.status)}</MenuItem>
-                        )
-                      }
-                    </Select>
+                    {statuses.length > 0 && (
+                      <Select
+                        labelId='select-status-label'
+                        id='select-status'
+                        label='Status'
+                        value={field.state.value ?? ''}
+                        onChange={(event) => field.handleChange(event.target.value)}
+                        sx={{
+                          width: '100%',
+                        }}
+                      >
+                        {
+                          statuses.map( status => 
+                            <MenuItem id={status.id} value={status.status}>{t(status.status)}</MenuItem>
+                          )
+                        }
+                      </Select>
+                    )}
                   </FormControl>
                 </>
               )

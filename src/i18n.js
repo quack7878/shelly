@@ -23,7 +23,7 @@ const resources = {
       'publishing-house': 'Publishing House',
       'publishing-date': 'Publishing Date',
       'type': 'Type',
-      'ebook': 'ebook',
+      'ebook': 'Ebook',
       'audiobook': 'Audio book',
       'paperback': 'Paperback',
       'hardcover': 'Hardcover',
