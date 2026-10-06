@@ -1,5 +1,5 @@
 import { db } from '../db'
 
 export async function getStatuses() {
-  return await db.status.toArray()
+  return await db.statuses.toArray()
 }
