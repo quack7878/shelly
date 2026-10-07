@@ -44,6 +44,8 @@ const resources = {
       'home': 'Home',
       'search': 'Search',
       'settings': 'Settings',
+      'cant-find-book': 'Can\'t find your book?',
+      'add-yourself': 'Add it yourself!',
     }
   },
   fr: {
@@ -88,6 +90,8 @@ const resources = {
       'home': 'Accueil',
       'search': 'Recherche',
       'settings': 'Réglages',
+      'cant-find-book': 'Tu ne trouves pas ton livre?',
+      'add-yourself': 'Ajoute le toi-même!',
     }
   }
 }

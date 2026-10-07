@@ -3,6 +3,8 @@ import { searchBooks } from '../services/books'
 import { useTranslation } from 'react-i18next'
 import { get } from '../services/preferences'
 import { useNavigate } from 'react-router-dom'
+import { Book } from '../models/Book'
+import AddIcon from '@mui/icons-material/Add'
 
 import {
   Alert,
@@ -78,7 +80,7 @@ export default function Search() {
       >
         <CardActionArea onClick={() => navigate('/book', { state: { book } })} sx={{ display: 'flex', justifyContent: 'spaceAround',  }}>
           <Box
-            component="img"
+            component='img'
             src={book.cover}
             sx={{
               width: 90,
@@ -107,7 +109,7 @@ export default function Search() {
             }}
           >
             <Typography
-              variant="h6"
+              variant='h6'
               fontWeight={700}
               sx={{
                 overflow: 'hidden',
@@ -120,8 +122,8 @@ export default function Search() {
             </Typography>
 
             <Typography
-              variant="body2"
-              color="text.secondary"
+              variant='body2'
+              color='text.secondary'
               sx={{ 
                 mt: 0.75,
                 textAlign: 'start',
@@ -147,7 +149,7 @@ export default function Search() {
       <Box sx={{ maxWidth: 1400, mx: 'auto' }}>
         <Box sx={{ mb: 4 }}>
           <Typography
-            variant="h3"
+            variant='h3'
             fontWeight={800}
             sx={{
               fontSize: { xs: '2rem', md: '3rem' },
@@ -174,7 +176,7 @@ export default function Search() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder={t('search-by-title')}
-            variant="outlined"
+            variant='outlined'
             sx={{
               '& .MuiOutlinedInput-root': {
                 borderRadius: 3,
@@ -183,8 +185,8 @@ export default function Search() {
           slotProps={{
             input: {
               startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="action" />
+                <InputAdornment position='start'>
+                  <SearchIcon color='action' />
                 </InputAdornment>
               ),
             },
@@ -192,8 +194,8 @@ export default function Search() {
         />
 
           <Button
-            type="submit"
-            variant="contained"
+            type='submit'
+            variant='contained'
             disabled={loading || !query.trim()}
             sx={{
               px: { xs: 2, sm: 4 },
@@ -203,18 +205,18 @@ export default function Search() {
               whiteSpace: 'nowrap',
             }}
           >
-            {loading ? <CircularProgress size={24} color="inherit" /> : t('search')}
+            {loading ? <CircularProgress size={24} color='inherit' /> : t('search')}
           </Button>
         </Box>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 3, maxWidth: 800 }}>
+          <Alert severity='error' sx={{ mb: 3, maxWidth: 800 }}>
             {error}
           </Alert>
         )}
 
         {!loading && books.length === 0 && query && !error && (
-          <Typography color="text.secondary">
+          <Typography color='text.secondary'>
             {t('no-books-found')} “{query}”.
           </Typography>
         )}
@@ -226,6 +228,72 @@ export default function Search() {
             gap: 2,
           }}
         >
+          <Card
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 2,
+              p: 2,
+              borderRadius: 3,
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
+              },
+            }}
+          >
+            <CardActionArea onClick={() => navigate('/book', { state: {book: new Book ({})} }) } sx={{ display: 'flex', justifyContent: 'spaceAround',  }}>
+              <Box
+                sx={{
+                  borderRadius: 2,
+                  flexShrink: 0,
+                  display: 'flex',
+                }}
+              >
+                <AddIcon color='primary' fontSize='large'/>
+              </Box>
+
+              <CardContent
+                sx={{
+                  p: 0,
+                  '&:last-child': {
+                    pb: 0,
+                  },
+                  minWidth: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  flexGrow: 1,
+                  padding: 2,
+                  alignSelf: 'start',
+                }}
+              >
+                <Typography
+                  variant='h5'
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    textAlign: 'start',
+                  }}
+                >
+                  {t('cant-find-book')}
+                </Typography>
+
+                <Typography
+                  variant='body2'
+                  color='text.secondary'
+                  sx={{ 
+                    mt: 0.75,
+                    textAlign: 'start',
+                  }}
+                >
+                  {t('add-yourself')}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
         {books.map((book, index) => (
           <BookCard
             index={index}

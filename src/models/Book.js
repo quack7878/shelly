@@ -1,13 +1,13 @@
 export class Book {
   
   constructor({
-    isbn,
-    title,
-    author,
-    publishedDate,
-    pages,
-    publishingHouse,
-    cover,
+    isbn = '',
+    title = '',
+    author = '',
+    publishedDate = new Date(),
+    pages = 0,
+    publishingHouse = '',
+    cover = null,
     type = 'ebook',
     status = 'toRead'
   }) {
