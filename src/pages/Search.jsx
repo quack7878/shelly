@@ -5,6 +5,7 @@ import { get } from '../services/preferences'
 import { useNavigate } from 'react-router-dom'
 import { Book } from '../models/Book'
 import AddIcon from '@mui/icons-material/Add'
+import SearchIcon from '@mui/icons-material/Search'
 
 import {
   Alert,
@@ -18,8 +19,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-
-import SearchIcon from '@mui/icons-material/Search'
 
 export default function Search() {
   const navigate = useNavigate()
@@ -307,4 +306,3 @@ export default function Search() {
   </Box>
   )
 }
-
