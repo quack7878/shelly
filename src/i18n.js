@@ -15,6 +15,7 @@ const resources = {
       },
       home: {
         'welcome': 'Welcome!',
+        'all-books': 'All books',
       },
       bookPage: {
         'modify-book': 'Modify this book',
@@ -76,6 +77,7 @@ const resources = {
       },
       home: {
         'welcome': 'Bienvenue!',
+        'all-books': 'Mes livres',
       },
       bookPage: {
         'modify-book': 'Modifier ce livre',

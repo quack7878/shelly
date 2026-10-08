@@ -4,6 +4,8 @@ import Home from './pages/Home'
 import Settings from './pages/Settings'
 import Search from './pages/Search'
 import NavBar from './pages/Navbar'
+import List from './pages/List'
+import Books from './pages/Books'
 import CustomTheme from './theme/CustomTheme'
 import BookPage from './pages/Book'
 
@@ -31,6 +33,8 @@ function App() {
                   <Route path='/settings' element={<Settings />} />
                   <Route path='/search' element={<Search />} />
                   <Route path='/book' element={<BookPage />} />
+                  <Route path='/list' element={<List />} />
+                  <Route path='/Books' element={<Books />} />
                 </Routes>
               </Container>
               <NavBar></NavBar>
