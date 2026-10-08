@@ -41,9 +41,9 @@ function NavBar() {
             navigate(routes[value])
           }}
         >
-          <BottomNavigationAction label={t('home')} icon={<HomeIcon />} />
-          <BottomNavigationAction label={t('search')} icon={<SearchIcon />} />
-          <BottomNavigationAction label={t('settings')} icon={<SettingsIcon />} />
+          <BottomNavigationAction label={t('nav.home')} icon={<HomeIcon />} />
+          <BottomNavigationAction label={t('nav.search')} icon={<SearchIcon />} />
+          <BottomNavigationAction label={t('nav.settings')} icon={<SettingsIcon />} />
         </BottomNavigation>
      </Paper>
   )

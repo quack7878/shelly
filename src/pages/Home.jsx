@@ -53,7 +53,7 @@ export default function Home() {
               }}
             >
               <Box
-                component="img"
+                component='img'
                 src={book.coverUrl}
                 sx={{
                   width: 90,
@@ -82,7 +82,7 @@ export default function Home() {
                 }}
               >
                 <Typography
-                  variant="h6"
+                  variant='h6'
                   fontWeight={700}
                   sx={{
                     overflow: 'hidden',
@@ -95,8 +95,8 @@ export default function Home() {
                 </Typography>
 
                 <Typography
-                  variant="body2"
-                  color="text.secondary"
+                  variant='body2'
+                  color='text.secondary'
                   sx={{ 
                     mt: 0.75,
                     textAlign: 'start',

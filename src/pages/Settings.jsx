@@ -73,18 +73,18 @@ function Settings() {
 
         <FormControl sx={{ flexGrow: 1 }}>
           <InputLabel id='select-tint-label'>
-            {t('tint')}
+            {t('settingsPage.tint')}
           </InputLabel>
           <Select
             labelId='select-tint'
-            label={t('tint')}
+            label={t('settingsPage.tint')}
             id='select-tint-label'
             value={tint ?? 'GREEN'}
             onChange={changeTint}
             style = {{ flexGrow: 1 }}
           >
-            <MenuItem value={'PINK'}>{t('pink')}</MenuItem>
-            <MenuItem value={'GREEN'}>{t('green')}</MenuItem>
+            <MenuItem value={'PINK'}>{t('settingsPage.pink')}</MenuItem>
+            <MenuItem value={'GREEN'}>{t('settingsPage.green')}</MenuItem>
           </Select>
         </FormControl>
 
@@ -100,17 +100,17 @@ function Settings() {
 
         <FormControl>
           <InputLabel id='select-language-label'>
-            {t('language')}
+            {t('settingsPage.language')}
           </InputLabel>
           <Select
             labelId='select-language-label'
             id='select-language'
-            label={t('select-language-label')}
+            label={t('settingsPage.language')}
             value={i18n.language}
             onChange={changeLanguage}
           >
-            <MenuItem value={'fr'}>{t('french')}</MenuItem>
-            <MenuItem value={'en'}>{t('english')}</MenuItem>
+            <MenuItem value={'fr'}>{t('settingsPage.fr')}</MenuItem>
+            <MenuItem value={'en'}>{t('settingsPage.en')}</MenuItem>
           </Select>
         </FormControl>
 
@@ -144,7 +144,7 @@ function Settings() {
             fullWidth
             value={googlekey}
             onChange={(event) => setGooglekey(event.target.value)}
-            label={t('googlekey')}
+            label={t('settingsPage.googlekey')}
             variant='outlined'
             type='password'
             sx={{
@@ -155,8 +155,8 @@ function Settings() {
         />
 
           <Button
-            type="submit"
-            variant="contained"
+            type='submit'
+            variant='contained'
             sx={{
               px: { xs: 2, sm: 4 },
               borderRadius: 3,
@@ -165,7 +165,7 @@ function Settings() {
               whiteSpace: 'nowrap',
             }}
           >
-            {t('save')}
+            {t('global.save')}
           </Button>
         </Box>
 

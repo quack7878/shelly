@@ -53,7 +53,7 @@ export default function Search() {
       const result = await searchBooks(trimmedQuery)
       setBooks(result || [])
     } catch {
-      setError(t('books-search-error'))
+      setError(t('searchPage.search-error'))
     } finally {
       setLoading(false)
     }
@@ -155,7 +155,7 @@ export default function Search() {
               letterSpacing: '-0.04em',
             }}
           >
-            {t('discover-next-read')}
+            {t('searchPage.discover-next-read')}
           </Typography>
 
         </Box>
@@ -174,7 +174,7 @@ export default function Search() {
             fullWidth
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder={t('search-by-title')}
+            placeholder={t('searchPage.search-by-title')}
             variant='outlined'
             sx={{
               '& .MuiOutlinedInput-root': {
@@ -204,7 +204,7 @@ export default function Search() {
               whiteSpace: 'nowrap',
             }}
           >
-            {loading ? <CircularProgress size={24} color='inherit' /> : t('search')}
+            {loading ? <CircularProgress size={24} color='inherit' /> : t('global.search')}
           </Button>
         </Box>
 
@@ -216,7 +216,7 @@ export default function Search() {
 
         {!loading && books.length === 0 && query && !error && (
           <Typography color='text.secondary'>
-            {t('no-books-found')} “{query}”.
+            {t('searchPage.no-books-found')} “{query}”.
           </Typography>
         )}
 
@@ -277,7 +277,7 @@ export default function Search() {
                     textAlign: 'start',
                   }}
                 >
-                  {t('cant-find-book')}
+                  {t('searchPage.cant-find-book')}
                 </Typography>
 
                 <Typography
@@ -288,7 +288,7 @@ export default function Search() {
                     textAlign: 'start',
                   }}
                 >
-                  {t('add-yourself')}
+                  {t('searchPage.add-yourself')}
                 </Typography>
               </CardContent>
             </CardActionArea>

@@ -92,7 +92,6 @@ export default function BookPage() {
   function readerFile(value) {
     const reader = new FileReader()
 
-    console.log(value)
     reader.onload = () => {
       setImagePreview(reader.result)
     }
@@ -103,7 +102,7 @@ export default function BookPage() {
   }
 
   function isValidIsbn(isbn) {
-    const cleaned = isbn.replace(/[-\s]/g, "");
+    const cleaned = isbn.replace(/[-\s]/g, '');
 
     return (
       /^\d{13}$/.test(cleaned) ||
@@ -127,14 +126,14 @@ export default function BookPage() {
     >
       <Box sx={{ mb: 4 }}>
         <Typography
-          variant="h3"
+          variant='h3'
           fontWeight={800}
           sx={{
             fontSize: { xs: '2rem', md: '3rem' },
             letterSpacing: '-0.04em',
           }}
         >
-          {t('modify-book')}
+          {t('bookPage.modify-book')}
         </Typography>
       </Box>
 
@@ -153,7 +152,7 @@ export default function BookPage() {
               onChange: ({ value }) => {
 
                 if (value.size > 5 * 1024 * 1024 ) {
-                  return t('file-too-large')
+                  return t('bookPage.file-too-large')
                 }
 
                 return undefined
@@ -183,7 +182,7 @@ export default function BookPage() {
 
                 <input 
                   id='book-image-input'
-                  type="file" 
+                  type='file' 
                   accept='image/*'
                   hidden
                   onChange={(event) => {
@@ -210,7 +209,7 @@ export default function BookPage() {
             name='title'
             validators={{
               onChange: ({ value }) => {
-                return !value.trim() ? t('empty') : undefined
+                return !value.trim() ? t('bookPage.empty') : undefined
               }
             }}
             children={(field) => {
@@ -219,7 +218,7 @@ export default function BookPage() {
                   <TextField
                     fullWidth
                     name={field.name}
-                    label={t('title')}
+                    label={t('bookPage.title')}
                     value={field.state.value}
                     onChange={(event) => field.handleChange(event.target.value)}
                     error={
@@ -249,11 +248,11 @@ export default function BookPage() {
             validators={{
               onChange: ({ value }) => {
                 if (!value.trim()) {
-                  return t('empty')
+                  return t('bookPage.empty')
                 }
 
                 if(!isValidIsbn(value)) {
-                  return t('invalid-isbn') 
+                  return t('bookPage.invalid-isbn') 
                 }
 
                 return undefined
@@ -297,11 +296,11 @@ export default function BookPage() {
               onChange: ({ value }) => {
 
                 if (value == '') {
-                  return t('empty')
+                  return t('bookPage.empty')
                 }
 
                 if(isNaN(value)) {
-                  return t('invalid-number') 
+                  return t('bookPage.invalid-number') 
                 }
 
                 return undefined
@@ -314,7 +313,7 @@ export default function BookPage() {
                   <TextField
                     fullWidth
                     name={field.name}
-                    label={t('pages')}
+                    label={t('bookPage.pages')}
                     value={field.state.value}
                     onChange={(event) => {
                       if (Number(event.target.value)) {
@@ -354,7 +353,7 @@ export default function BookPage() {
                   <TextField
                     fullWidth
                     name={field.name}
-                    label={t('author')}
+                    label={t('bookPage.author')}
                     value={field.state.value}
                     onChange={(event) => field.handleChange(event.target.value)}
                     variant='outlined'
@@ -378,7 +377,7 @@ export default function BookPage() {
                   <TextField
                     fullWidth
                     name={field.name}
-                    label={t('publishing-house')}
+                    label={t('bookPage.publishing-house')}
                     value={field.state.value}
                     onChange={(event) => field.handleChange(event.target.value)}
                     variant='outlined'
@@ -401,13 +400,13 @@ export default function BookPage() {
                 <>
                   <FormControl sx={{ width: '100%', }}>
                     <InputLabel id='select-type-label'>
-                      {t('type')}
+                      {t('bookPage.type')}
                     </InputLabel>
                     {types.length > 0 && (
                       <Select
                         labelId='select-type-label'
                         id='select-type'
-                        label={t('type')}
+                        label={t('bookPage.type')}
                         value={field.state.value ?? ''}
                         onChange={(event) => field.handleChange(event.target.value)}
                         sx={{
@@ -416,7 +415,7 @@ export default function BookPage() {
                       >
                         {types.map((type) => (
                           <MenuItem key={type.id} value={type.type}>
-                            {t(type.type)}
+                            {t(`bookPage.${type.type}`)}
                           </MenuItem>
                         ))}
                       </Select>
@@ -435,13 +434,13 @@ export default function BookPage() {
                 <>
                   <FormControl sx={{ width: '100%', }}>
                     <InputLabel id='select-status-label'>
-                      Status
+                      {t('bookPage.status')}
                     </InputLabel>
                     {statuses.length > 0 && (
                       <Select
                         labelId='select-status-label'
                         id='select-status'
-                        label='Status'
+                        label={t('status')}
                         value={field.state.value ?? ''}
                         onChange={(event) => field.handleChange(event.target.value)}
                         sx={{
@@ -450,7 +449,7 @@ export default function BookPage() {
                       >
                         {
                           statuses.map( status => 
-                            <MenuItem id={status.id} value={status.status}>{t(status.status)}</MenuItem>
+                            <MenuItem id={status.id} value={status.status}>{t(`bookPage.${status.status}`)}</MenuItem>
                           )
                         }
                       </Select>
@@ -474,7 +473,7 @@ export default function BookPage() {
                   >
 
                     <MobileDatePicker
-                      label={t('publishing-date')}
+                      label={t('bookPage.publishing-date')}
                       closeOnSelect={true}
                       value={dayjs(field.state.value) ?? null}
                       format='YYYY/MM/DD'
@@ -509,7 +508,7 @@ export default function BookPage() {
                   whiteSpace: 'nowrap',
                 }}
               >
-                {isSubmitting ? "Saving..." : t("save")}
+                {isSubmitting ? 'Saving...' : t('global.save')}
               </Button>
             )}
           </form.Subscribe>
