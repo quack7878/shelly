@@ -32,7 +32,7 @@ function NavBar() {
   }, [])
 
   return (
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, bgcolor: 'background.default' }} elevation={3}>
+      <Paper sx={{ bgcolor: 'background.default' }} elevation={3}>
         <BottomNavigation
           showLabels
           value={path}

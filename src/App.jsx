@@ -11,10 +11,21 @@ function App() {
 
   return (
     <CustomTheme>
-      <main style={{ display: 'flex', flexGrow: 1, flexDirection: 'column'}} >
-        <Container sx={{ bgcolor: 'background.default', display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 0 }}>
+      <main style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', height: '100dvh' }} >
+        <Container 
+          sx={{ 
+            bgcolor: 'background.default',
+            display: 'flex',
+            flex: '1 1 auto',
+            minHeight: 0,
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            flexDirection: 'column',
+            padding: 0 
+          }}
+      >
             <BrowserRouter basename='/'>
-              <Container sx={{ bgcolor: 'background.default', display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 0, paddingBottom: 7 }}>
+              <Container sx={{ bgcolor: 'background.default', display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 0, flexWrap: 'nowrap', overflowX: 'hidden', overflowY: 'auto' }}>
                 <Routes>
                   <Route path='/' element={<Home />} />
                   <Route path='/settings' element={<Settings />} />

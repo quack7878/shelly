@@ -43,7 +43,8 @@ export default function Home() {
       <Box
         sx={{
           display: 'flex',
-          flexWrap: 'nowarp',
+          flexWrap: 'nowrap',
+          boxSizing: 'border-box',
           overflowX: 'auto',
           overflowY: 'hidden',
           width: '100%',
