@@ -54,6 +54,8 @@ const resources = {
         'language': 'Language',
         'en': 'English',
         'fr': 'French',
+        'googlebooks': 'GoogleBooks',
+        'openlibrary': 'OpenLibrary',
         'googlekey': 'Google Books Api key',
       },
     }
@@ -110,6 +112,8 @@ const resources = {
         'language': 'Langue',
         'en': 'Anglais',
         'fr': 'Français',
+        'googlebooks': 'GoogleBooks',
+        'openlibrary': 'OpenLibrary',
         'googlekey': 'Clé Api Google Books',
       },
     }

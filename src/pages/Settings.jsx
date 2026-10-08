@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from '../theme/CustomTheme' 
 import { useColorScheme } from '@mui/material/styles'
 import { useTranslation } from 'react-i18next'
-import { save, get } from '../services/preferences'
+import { save, get, languages, tints, apis } from '../services/preferences'
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
@@ -22,7 +22,7 @@ function Settings() {
   const { t, i18n } = useTranslation()
   const { tint, setTint } = useContext(ThemeContext)
   const { mode, setMode } = useColorScheme()
-  const [ api, setApi ] = useState('openlibrary')
+  const [ api, setApi ] = useState('')
   const [ googlekey, setGooglekey ] = useState('')
 
   useEffect(() => {
@@ -83,8 +83,9 @@ function Settings() {
             onChange={changeTint}
             style = {{ flexGrow: 1 }}
           >
-            <MenuItem value={'PINK'}>{t('settingsPage.pink')}</MenuItem>
-            <MenuItem value={'GREEN'}>{t('settingsPage.green')}</MenuItem>
+            {tints().map((tint) => (
+              <MenuItem value={tint.toUpperCase()}>{t(`settingsPage.${tint}`)}</MenuItem>
+            ))}
           </Select>
         </FormControl>
 
@@ -109,8 +110,9 @@ function Settings() {
             value={i18n.language}
             onChange={changeLanguage}
           >
-            <MenuItem value={'fr'}>{t('settingsPage.fr')}</MenuItem>
-            <MenuItem value={'en'}>{t('settingsPage.en')}</MenuItem>
+            {languages().map((language) => (
+              <MenuItem value={language}>{t(`settingsPage.${language}`)}</MenuItem>
+            ))}
           </Select>
         </FormControl>
 
@@ -125,8 +127,9 @@ function Settings() {
             value={api ?? 'openlibrary'}
             onChange={changeApi}
           >
-            <MenuItem value={'openlibrary'}>OpenLibrary</MenuItem>
-            <MenuItem value={'googlebooks'}>Google Books</MenuItem>
+            {apis().map((api) => (
+              <MenuItem value={api}>{t(`settingsPage.${api}`)}</MenuItem>
+            ))}
           </Select>
         </FormControl>
 
