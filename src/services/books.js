@@ -119,6 +119,6 @@ export async function getBooks() {
   return await db.books.toArray()
 }
 
-export async function getBook(id) {
-  return db.books.get(id)
+export async function getReadingBooks() {
+  return await db.books.where('status').equalsIgnoreCase('reading').toArray()
 }

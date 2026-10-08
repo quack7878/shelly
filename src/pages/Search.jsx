@@ -128,7 +128,7 @@ export default function Search() {
                 textAlign: 'start',
               }}
             >
-              {book.author || 'Unknown author'}
+              {book.author}
             </Typography>
           </CardContent>
         </CardActionArea>

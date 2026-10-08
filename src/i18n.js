@@ -13,6 +13,9 @@ const resources = {
         'settings': 'Settings',
         'search': 'Search',
       },
+      home: {
+        'welcome': 'Welcome!',
+      },
       bookPage: {
         'modify-book': 'Modify this book',
         'file-too-large': 'File too large',
@@ -70,6 +73,9 @@ const resources = {
         'home': 'Accueil',
         'search': 'Recherche',
         'settings': 'Réglages',
+      },
+      home: {
+        'welcome': 'Bienvenue!',
       },
       bookPage: {
         'modify-book': 'Modifier ce livre',
