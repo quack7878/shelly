@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { getReadingBooks } from '../services/books'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
 
 import {
   Box,
@@ -159,14 +160,24 @@ export default function Home() {
               alignItems: 'center',
               flexGrow: 1,
               padding: 1,
-              alignSelf: 'start',
             }}
           >
+            <div style={{ display: 'flex', alignItems: 'start', flex: 1, }}>
+              <MenuBookIcon sx={{ display: 'flex', alignItems: 'start' }} color='disabled' fontSize='large'/>
+            </div>
+
             <Typography
               variant='h5'
+              sx={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+              }}
             >
               {t('home.all-books')}
             </Typography>
+
+            <div style={{ display: 'flex', flex: 1}}></div>
 
           </CardContent>
         </CardActionArea>
