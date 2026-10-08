@@ -464,6 +464,11 @@ export default function BookPage() {
           <form.Field
             name='publishedDate'
             children={(field) => {
+              const dateValue =
+                field.state.value && dayjs(field.state.value).isValid()
+                  ? dayjs(field.state.value)
+                  : null
+
               return (
                 <>
                   <LocalizationProvider 
@@ -475,7 +480,8 @@ export default function BookPage() {
                     <MobileDatePicker
                       label={t('bookPage.publishing-date')}
                       closeOnSelect={true}
-                      value={dayjs(field.state.value) ?? null}
+                      minDate={dayjs('1000-01-01')}
+                      value={dateValue}
                       format='YYYY/MM/DD'
                       onChange={(value) => field.handleChange(value ? value.format('YYYY-MM-DD') : null)}
                       sx={{
