@@ -64,7 +64,6 @@ export default function Search() {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
         px: { xs: 2, sm: 4, md: 8 },
         py: 5,
         bgcolor: 'background.default',

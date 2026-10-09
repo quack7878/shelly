@@ -44,7 +44,7 @@ export default {
     'search-by-title': 'Recherche par le titre',
     'no-books-found': 'Aucun livres trouvés pour  ',
     'cant-find-book': 'Tu ne trouves pas ton livre?',
-    'add-yourself': 'Ajoute le toi-même!',
+    'add-yourself': 'Ajoute-le toi-même!',
   },
   settingsPage: {
     'tint': 'Teinte',
