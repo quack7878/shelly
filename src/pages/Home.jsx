@@ -57,12 +57,12 @@ export default function Home() {
         }}
       >
         {readingBooks.map((book, index) => (
-          <BookCard key={index} book={book} styles={{ width: '90%' }} ></BookCard>
+          <BookCard key={index} book={book} styles={{ width: '90%', scrollSnapAlign: 'center', }} ></BookCard>
         ))}
       </Box>
 
       <CustomCard
-        styles={{ marginTop: 2 }}
+        styles={{ marginTop: 2, }}
       >
         <CardActionArea 
           onClick={() => navigate('/books') } 
@@ -81,7 +81,7 @@ export default function Home() {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'start', flex: 1, }}>
-              <MenuBookIcon sx={{ display: 'flex', alignItems: 'start' }} color='disabled' fontSize='large'/>
+              <MenuBookIcon sx={{ display: 'flex', alignItems: 'start', marginLeft: 0.5 }} color='disabled' fontSize='large'/>
             </div>
 
             <Typography

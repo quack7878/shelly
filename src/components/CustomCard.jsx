@@ -24,7 +24,6 @@ export default function CustomCard({ children, styles }) {
             boxShadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
           },
           flexShrink: 0,
-          scrollSnapAlign: 'center',
         }),
         (theme) =>
           theme.applyStyles('dark', {
@@ -36,7 +35,7 @@ export default function CustomCard({ children, styles }) {
             },
             border: '1px solid rgba(255, 255, 255, 0.08)',
           }),
-        styles
+          styles
       ]}
     >
     { children }
