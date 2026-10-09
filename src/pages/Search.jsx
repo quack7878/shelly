@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import { Book } from '../models/Book'
 import AddIcon from '@mui/icons-material/Add'
 import SearchIcon from '@mui/icons-material/Search'
+import BookCard from '../components/BookCard'
+import CustomCard from '../components/CustomCard'
 
 import {
   Alert,
@@ -59,87 +61,9 @@ export default function Search() {
     }
   }
 
-  function BookCard({book, index}) {
-    return (
-      <Card
-        key={index}
-        sx={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: 2,
-          p: 2,
-          borderRadius: 3,
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
-          transition: 'all 0.2s ease',
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
-          },
-        }}
-      >
-        <CardActionArea onClick={() => navigate('/book', { state: { book } })} sx={{ display: 'flex', justifyContent: 'spaceAround',  }}>
-          <Box
-            component='img'
-            src={book.cover}
-            sx={{
-              width: 90,
-              height: 130,
-              objectFit: 'cover',
-              borderRadius: 2,
-              flexShrink: 0,
-              bgcolor: 'grey',
-              display: 'flex'
-            }}
-          />
-
-          <CardContent
-            sx={{
-              p: 0,
-              '&:last-child': {
-                pb: 0,
-              },
-              minWidth: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              flexGrow: 1,
-              padding: 2,
-              alignSelf: 'start',
-            }}
-          >
-            <Typography
-              variant='h6'
-              fontWeight={700}
-              sx={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                textAlign: 'start',
-              }}
-            >
-              {book.title}
-            </Typography>
-
-            <Typography
-              variant='body2'
-              color='text.secondary'
-              sx={{ 
-                mt: 0.75,
-                textAlign: 'start',
-              }}
-            >
-              {book.author}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    )
-  }
-
   return (
     <Box
       sx={{
-        minHeight: '100vh',
         px: { xs: 2, sm: 4, md: 8 },
         py: 5,
         bgcolor: 'background.default',
@@ -227,80 +151,80 @@ export default function Search() {
             gap: 2,
           }}
         >
-          <Card
-            sx={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: 2,
-              p: 2,
-              borderRadius: 3,
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
-              transition: 'all 0.2s ease',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
-              },
-            }}
-          >
-            <CardActionArea onClick={() => navigate('/book', { state: {book: new Book ({})} }) } sx={{ display: 'flex', justifyContent: 'spaceAround',  }}>
-              <Box
+          <CustomCard>
+            <CardActionArea 
+              onClick={() => navigate(
+                  '/book', 
+                  { state: {book: new Book ({})} 
+                }) 
+              } 
+              sx={{ 
+                display: 'flex', 
+                justifyContent: 'spaceAround',
+              }}
+           >
+            <Box
+              sx={{
+                borderRadius: 2,
+                flexShrink: 0,
+                display: 'flex',
+                marginLeft: 2,
+              }}
+            >
+              <AddIcon color='primary' fontSize='large'/>
+            </Box>
+
+            <CardContent
+              sx={{
+                p: 0,
+                '&:last-child': {
+                  pb: 0,
+                },
+                minWidth: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flexGrow: 1,
+                padding: 2,
+                alignSelf: 'start',
+              }}
+            >
+              <Typography
+                variant='h5'
                 sx={{
-                  borderRadius: 2,
-                  flexShrink: 0,
-                  display: 'flex',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  textAlign: 'start',
                 }}
               >
-                <AddIcon color='primary' fontSize='large'/>
-              </Box>
+                {t('searchPage.cant-find-book')}
+              </Typography>
 
-              <CardContent
-                sx={{
-                  p: 0,
-                  '&:last-child': {
-                    pb: 0,
-                  },
-                  minWidth: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  flexGrow: 1,
-                  padding: 2,
-                  alignSelf: 'start',
+              <Typography
+                variant='body2'
+                color='text.secondary'
+                sx={{ 
+                  mt: 0.75,
+                  textAlign: 'start',
                 }}
               >
-                <Typography
-                  variant='h5'
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    textAlign: 'start',
-                  }}
-                >
-                  {t('searchPage.cant-find-book')}
-                </Typography>
+                {t('searchPage.add-yourself')}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </CustomCard>
 
-                <Typography
-                  variant='body2'
-                  color='text.secondary'
-                  sx={{ 
-                    mt: 0.75,
-                    textAlign: 'start',
-                  }}
-                >
-                  {t('searchPage.add-yourself')}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        {books.map((book, index) => (
-          <BookCard
-            index={index}
-            key={index}
-            book={book}
-          />
-        ))
+        {
+          books.map((book, index) => (
+            <BookCard
+              key={index}
+              book={book}
+              onClick={() => navigate('/book', { state: {book: book } } )} 
+            />
+         ))
        }
+
       </Box>
     </Box>
   </Box>
