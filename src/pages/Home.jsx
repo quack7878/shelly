@@ -3,6 +3,8 @@ import { getReadingBooks } from '../services/books'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
+import BookCard from '../components/BookCard'
+import CustomCard from '../components/CustomCard'
 
 import {
   Box,
@@ -30,16 +32,16 @@ export default function Home() {
   return (
     <div style={{ display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 24 }}>
       
-        <Typography
-          variant='h3'
-          fontWeight={800}
-          sx={{
-            fontSize: { xs: '2rem', md: '3rem' },
-            letterSpacing: '-0.04em',
-          }}
-        >
-          {t('home.welcome')}
-        </Typography>
+      <Typography
+        variant='h3'
+        fontWeight={800}
+        sx={{
+          fontSize: { xs: '2rem', md: '3rem' },
+          letterSpacing: '-0.04em',
+        }}
+      >
+        {t('home.welcome')}
+      </Typography>
 
       <Box
         sx={{
@@ -49,114 +51,28 @@ export default function Home() {
           overflowX: 'auto',
           overflowY: 'hidden',
           width: '100%',
-          gap: 4,
+          gap: 2,
           padding: 2,
           scrollSnapType: 'x mandatory',
         }}
       >
         {readingBooks.map((book, index) => (
-          <Card
-            key={index}
-            sx={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              width: '80%',
-              gap: 2,
-              padding: 2,
-              borderRadius: 3,
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
-              transition: 'all 0.2s ease',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
-              },
-              flexShrink: 0,
-              scrollSnapAlign: 'center',
-            }}
-          >
-            <CardActionArea onClick={() => navigate('/books')} sx={{ display: 'flex', justifyContent: 'spaceAround',  }}>
-              <Box
-                component='img'
-                src={book.cover}
-                sx={{
-                  width: 90,
-                  height: 130,
-                  objectFit: 'cover',
-                  borderRadius: 2,
-                  flexShrink: 0,
-                  bgcolor: 'grey',
-                  display: 'flex'
-                }}
-              />
-
-              <CardContent
-                sx={{
-                  p: 0,
-                  '&:last-child': {
-                    pb: 0,
-                  },
-                  minWidth: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  flexGrow: 1,
-                  padding: 2,
-                  alignSelf: 'start',
-                }}
-              >
-                <Typography
-                  variant='h6'
-                  fontWeight={700}
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    textAlign: 'start',
-                  }}
-                >
-                  {book.title}
-                </Typography>
-
-                <Typography
-                  variant='body2'
-                  color='text.secondary'
-                  sx={{ 
-                    mt: 0.75,
-                    textAlign: 'start',
-                  }}
-                >
-                  {book.author || 'Unknown author'}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+          <BookCard key={index} book={book} styles={{ width: '90%' }} ></BookCard>
         ))}
-
       </Box>
 
-      <Card
-        sx={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: 2,
-          p: 2,
-          marginTop: 2,
-          borderRadius: 3,
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
-          transition: 'all 0.2s ease',
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
-          },
-        }}
+      <CustomCard
+        styles={{ marginTop: 2 }}
       >
-        <CardActionArea onClick={() => navigate('/books', { state: {list: {name: 'aa'}} }) } sx={{ display: 'flex', justifyContent: 'spaceAround',  }}>
+        <CardActionArea 
+          onClick={() => navigate('/books') } 
+          sx={{ 
+            display: 'flex', 
+            justifyContent: 'spaceAround', 
+          }}
+        >
           <CardContent
             sx={{
-              p: 0,
-              '&:last-child': {
-                pb: 0,
-              },
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -183,7 +99,8 @@ export default function Home() {
 
           </CardContent>
         </CardActionArea>
-      </Card>
+      </CustomCard>
+
     </div>
   )
 }
