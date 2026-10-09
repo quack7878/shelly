@@ -51,6 +51,7 @@ export default function Home() {
           width: '100%',
           gap: 4,
           padding: 2,
+          scrollSnapType: 'x mandatory',
         }}
       >
         {readingBooks.map((book, index) => (
@@ -59,7 +60,7 @@ export default function Home() {
             sx={{
               display: 'flex',
               alignItems: 'flex-start',
-              width: '324px',
+              width: '80%',
               gap: 2,
               padding: 2,
               borderRadius: 3,
@@ -70,6 +71,7 @@ export default function Home() {
                 boxShadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
               },
               flexShrink: 0,
+              scrollSnapAlign: 'center',
             }}
           >
             <CardActionArea onClick={() => navigate('/books')} sx={{ display: 'flex', justifyContent: 'spaceAround',  }}>
