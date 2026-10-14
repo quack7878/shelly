@@ -1,12 +1,12 @@
 export default {
   global: {
     'save': 'Save',
+    'search': 'Search',
   },
   nav: {
     'home': 'Home',
     'search': 'Search',
     'settings': 'Settings',
-    'search': 'Search',
   },
   home: {
     'welcome': 'Welcome!',
