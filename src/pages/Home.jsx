@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getReadingBooks } from '../services/books'
-import { saveList } from '../services/lists'
+import { saveList, getLists } from '../services/lists'
 import { List } from '../models/List'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -27,11 +27,13 @@ export default function Home() {
 
   const { t, i18n } = useTranslation()
   const [readingBooks, setReadingBooks] = useState([])
+  const [lists, setLists] = useState([])
   const [listDialogOpen, setListDialogOpen] = useState(false)
 
   useEffect (() => {
     async function init() {
       setReadingBooks(await getReadingBooks())
+      setLists(await getLists())
     }
 
     init()
@@ -142,6 +144,37 @@ export default function Home() {
         >
           <AddIcon />
         </IconButton>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'nowrap',
+          boxSizing: 'border-box',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          width: '100%',
+          gap: 2,
+          padding: 2,
+          scrollSnapType: 'x mandatory',
+        }}
+      >
+        {lists.map((list, index) => (
+          <CustomCard key={index} styles={{ width: '50%', scrollSnapAlign: 'center', padding: '1rem', justifyContent: 'center', }} >
+            <Typography
+              variant='h6'
+              fontWeight={700}
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                textAlign: 'start',
+              }}
+            >
+            {list.name}
+          </Typography>
+          </CustomCard>
+        ))}
       </Box>
 
       <FormDialog 
