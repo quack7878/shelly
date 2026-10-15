@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react'
 import { getReadingBooks } from '../services/books'
+import { saveList } from '../services/lists'
+import { List } from '../models/List'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useForm } from '@tanstack/react-form'
+import TextField from '@mui/material/TextField'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import BookCard from '../components/BookCard'
 import CustomCard from '../components/CustomCard'
+import FormDialog from '../components/FormDialog'
+import IconButton from '@mui/material/IconButton'
+import AddIcon from '@mui/icons-material/Add'
 
 import {
   Box,
@@ -20,6 +27,7 @@ export default function Home() {
 
   const { t, i18n } = useTranslation()
   const [readingBooks, setReadingBooks] = useState([])
+  const [listDialogOpen, setListDialogOpen] = useState(false)
 
   useEffect (() => {
     async function init() {
@@ -28,6 +36,17 @@ export default function Home() {
 
     init()
   }, [])
+
+  const listForm = useForm({
+    defaultValues: {
+      name: '',
+    },
+    onSubmit: async ({ value }) => {
+      saveList(new List(value))
+      setListDialogOpen(false)
+      listForm.reset()
+    },
+  })
 
   return (
     <div style={{ display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 24 }}>
@@ -100,6 +119,81 @@ export default function Home() {
           </CardContent>
         </CardActionArea>
       </CustomCard>
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant='body1'
+          sx={{
+            display: 'flex',
+            paddingLeft: '0.5rem',
+            paddingTop: '1rem',
+          }}
+        >
+          {t('home.my-lists')}
+        </Typography>
+        <IconButton 
+          aria-label='mode' 
+          onClick={() => setListDialogOpen(true)}
+          sx={{ padding: 0, alignSelf: 'end' }} 
+        >
+          <AddIcon />
+        </IconButton>
+      </Box>
+
+      <FormDialog 
+        open={listDialogOpen}
+        onClose={() => setListDialogOpen(false)}
+      >
+        <form 
+          id='list'
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            listForm.handleSubmit()
+          }}
+        >
+          <listForm.Field
+            name='name'
+            validators={{
+              onChange: ({ value }) => {
+                return !value.trim() ? t('listForm.name-empty') : undefined
+              },
+            }}
+            children={(field) => {
+              return (
+                <>
+                  <TextField
+                    fullWidth
+                    name={field.name}
+                    label={t('listForm.name')}
+                    value={field.state.value}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    error={
+                      field.state.meta.errors.length > 0
+                    }
+                    helperText={
+                      field.state.meta.isTouched 
+                        ? field.state.meta.errors[0]
+                        : ''
+                    }
+                    variant='outlined'
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 3,
+                      },
+                    }}
+                  />
+                </>
+              )
+            }}
+          >
+          </listForm.Field>
+        </form>
+      </FormDialog>
 
     </div>
   )

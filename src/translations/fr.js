@@ -2,6 +2,7 @@ export default {
   global: {
     'save': 'Sauvegarder',
     'search': 'Rechercher',
+    'cancel': 'Annuler',
   },
   nav: {
     'home': 'Accueil',
@@ -11,6 +12,7 @@ export default {
   home: {
     'welcome': 'Bienvenue!',
     'all-books': 'Mes livres',
+    'my-lists': 'Mes listes',
   },
   bookPage: {
     'modify-book': 'Modifier ce livre',
@@ -56,5 +58,10 @@ export default {
     'googlebooks': 'GoogleBooks',
     'openlibrary': 'OpenLibrary',
     'googlekey': 'Clé Api Google Books',
+  },
+  listForm: {
+   'title': 'Nouvelle liste', 
+   'name': 'Nom',
+   'name-empty': 'Nom obligatoire',
   },
 }

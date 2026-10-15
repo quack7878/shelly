@@ -7,6 +7,7 @@ db.version(1).stores({
   preferences: 'id, value',
   statuses: '++id, status',
   types: '++id, type',
+  lists: '++id, name, position',
 })
 
 export async function populate() {
