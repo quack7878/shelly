@@ -1,16 +1,18 @@
 export default {
   global: {
     'save': 'Save',
+    'search': 'Search',
+    'cancel': 'Cancel',
   },
   nav: {
     'home': 'Home',
     'search': 'Search',
     'settings': 'Settings',
-    'search': 'Search',
   },
   home: {
     'welcome': 'Welcome!',
     'all-books': 'My books',
+    'my-lists': 'My lists',
   },
   bookPage: {
     'modify-book': 'Modify this book',
@@ -56,5 +58,10 @@ export default {
     'googlebooks': 'GoogleBooks',
     'openlibrary': 'OpenLibrary',
     'googlekey': 'Google Books Api key',
+  },
+  listForm: {
+   'title': 'New list', 
+   'name': 'Name',
+   'name-empty': 'Name mendatory',
   },
 }
