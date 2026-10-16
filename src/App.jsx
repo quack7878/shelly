@@ -8,6 +8,7 @@ import List from './pages/List'
 import Books from './pages/Books'
 import CustomTheme from './theme/CustomTheme'
 import BookPage from './pages/Book'
+import Lists from './pages/Lists'
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
                   <Route path='/book' element={<BookPage />} />
                   <Route path='/list' element={<List />} />
                   <Route path='/Books' element={<Books />} />
+                  <Route path='/lists' element={<Lists />} />
                 </Routes>
               </Container>
               <NavBar></NavBar>

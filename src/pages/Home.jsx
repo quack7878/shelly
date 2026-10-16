@@ -12,6 +12,7 @@ import CustomCard from '../components/CustomCard'
 import FormDialog from '../components/FormDialog'
 import IconButton from '@mui/material/IconButton'
 import AddIcon from '@mui/icons-material/Add'
+import SortIcon from '@mui/icons-material/Sort'
 
 import {
   Box,
@@ -125,24 +126,40 @@ export default function Home() {
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
-        <Typography variant='body1'
+        <Box
           sx={{
             display: 'flex',
-            paddingLeft: '0.5rem',
-            paddingTop: '1rem',
+            alignItems: 'center',
           }}
         >
-          {t('home.my-lists')}
-        </Typography>
+          <Typography variant='body1'
+            sx={{
+              display: 'flex',
+              paddingLeft: '0.5rem',
+              paddingTop: '1rem',
+            }}
+          >
+            {t('home.my-lists')}
+          </Typography>
+
+          <IconButton 
+            aria-label='mode' 
+            onClick={() => setListDialogOpen(true)}
+            sx={{ padding: 0, alignSelf: 'end' }} 
+          >
+            <AddIcon />
+          </IconButton>
+        </Box>
+
         <IconButton 
           aria-label='mode' 
-          onClick={() => setListDialogOpen(true)}
+          onClick={() => navigate('/lists') } 
           sx={{ padding: 0, alignSelf: 'end' }} 
         >
-          <AddIcon />
+          <SortIcon />
         </IconButton>
       </Box>
 
