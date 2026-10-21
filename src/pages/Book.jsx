@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
@@ -43,6 +44,7 @@ export default function BookPage() {
   const [language, setLanguage] = useState('')
 
   const [locale, setLocale] = useState(frFR)
+  const navigate = useNavigate()
 
   const locales = {
     'fr': frFR,
@@ -86,6 +88,7 @@ export default function BookPage() {
     },
     onSubmit: async ({ value }) => {
       saveBook(new Book(value))
+      navigate('/')
     },
   })
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useDragAndDrop } from 'react-aria-components/useDragAndDrop'
 import { useListData } from 'react-aria-components/useListData'
 import { ListBox, ListBoxItem } from 'react-aria-components'
@@ -28,6 +29,7 @@ export default function Lists() {
 
   function SortableLists({ items }) {
     const { t, i18n } = useTranslation()
+    const navigate = useNavigate()
 
     const list = useListData({
       initialItems: items,
@@ -49,6 +51,7 @@ export default function Lists() {
 
   function handleSaveOrder() {
     updateByPositions(list.items)
+    navigate('/')
   }
 
   return (
