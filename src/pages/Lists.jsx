@@ -21,8 +21,7 @@ export default function Lists() {
       .catch(setError)
     }, [])
 
-    if (error) return <p>Could not load lists.</p>
-    if (items === null) return <p>Loading lists…</p>
+    if (items === null) return <p>{t('loading-lists')}</p>
 
     return <SortableLists items={items} />
   }

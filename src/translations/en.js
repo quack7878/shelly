@@ -64,4 +64,7 @@ export default {
    'name': 'Name',
    'name-empty': 'Name mendatory',
   },
+  lists: {
+    'loading-lists': 'Loading lists...',
+  },
 }

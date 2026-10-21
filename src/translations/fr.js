@@ -64,4 +64,7 @@ export default {
    'name': 'Nom',
    'name-empty': 'Nom obligatoire',
   },
+  lists: {
+    'loading-lists': 'Chargement des listes...',
+  },
 }
