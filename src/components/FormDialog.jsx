@@ -19,8 +19,8 @@ export default function FormDialog({ open, onClose, children }) {
         { children }
       </DialogContent>
       <DialogActions>
-        <Button color='error' onClick={onClose}> {t('global.cancel')} </Button>
-        <Button type='submit' form='list'>
+        <Button onClick={onClose}> {t('global.cancel')} </Button>
+        <Button variant='contained' type='submit' form='list'>
           {t('global.save')}
         </Button>
       </DialogActions>

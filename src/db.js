@@ -2,12 +2,13 @@ import Dexie from 'dexie'
 
 const db = new Dexie('ShellyDatabase')
 
-db.version(1).stores({
+db.version(2).stores({
   books: '++id, isbn, title, author, publishedDate, pages, publishingHouse, type, status, cover ',
   preferences: 'id, value',
   statuses: '++id, status',
   types: '++id, type',
   lists: '++id, name, position',
+  booksList: '++id, bookId, listId',
 })
 
 export async function populate() {

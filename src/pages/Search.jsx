@@ -215,7 +215,7 @@ export default function Search() {
           </CardActionArea>
         </CustomCard>
 
-        {
+       {
           books.map((book, index) => (
             <BookCard
               key={index}

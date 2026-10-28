@@ -67,4 +67,7 @@ export default {
   lists: {
     'loading-lists': 'Loading lists...',
   },
+  list: {
+    'no-books': 'Add a book to see it here!',
+  },
 }

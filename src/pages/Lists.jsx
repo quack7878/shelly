@@ -57,11 +57,11 @@ export default function Lists() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', p: 2, alignSelf: 'stretch', flexGrow: 1 }}>
       <ListBox
-        aria-label="Your lists"
+        aria-label='Lists'
         items={list.items}
         dragAndDropHooks={dragAndDropHooks}
         orientation='vertical'
-         selectionMode='multiple'
+        selectionMode='multiple'
         style={{
           display: 'flex',
           gap: 2,
@@ -73,6 +73,7 @@ export default function Lists() {
           flexGrow: 1,
           width: '100%',
           alignItems: 'center',
+          gap: '16px',
         }}
       >
         {item => (

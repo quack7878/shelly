@@ -178,19 +178,39 @@ export default function Home() {
         }}
       >
         {lists.map((list, index) => (
-          <CustomCard key={index} styles={{ width: '50%', scrollSnapAlign: 'center', padding: '1rem', justifyContent: 'center', }} >
-            <Typography
-              variant='h6'
-              fontWeight={700}
-              sx={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                textAlign: 'start',
+          <CustomCard 
+            key={index} 
+            styles={{
+              width: '50%', 
+              scrollSnapAlign: 'center', 
+              justifyContent: 'center', 
+            }} 
+          >
+            <CardActionArea
+              onClick={() => navigate(
+                  '/list', 
+                  { state: {list} 
+                }) 
+              } 
+              sx={{ 
+                display: 'flex', 
+                justifyContent: 'spaceAround',
+                padding: '1rem'
               }}
             >
-            {list.name}
-          </Typography>
+              <Typography
+                variant='h6'
+                fontWeight={700}
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  textAlign: 'start',
+                }}
+              >
+              {list.name}
+              </Typography>
+            </CardActionArea>
           </CustomCard>
         ))}
       </Box>

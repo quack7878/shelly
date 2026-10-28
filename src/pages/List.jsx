@@ -19,6 +19,7 @@ export default function List() {
   const { state } = useLocation()
 
   const [list, setList] = useState(() => state?.list)
+  const [books, setBooks] = useState([])
 
   useEffect(() => {
     async function init() {
@@ -29,7 +30,44 @@ export default function List() {
   }, [])
 
   return (
-    <p>{list.name}</p>
+    <Box style={{ display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 24 }}>
+      <Typography
+        variant='h3'
+        fontWeight={800}
+        sx={{
+          fontSize: { xs: '2rem', md: '3rem' },
+          letterSpacing: '-0.04em',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {list.name}
+      </Typography>
+
+     {
+        (books.length > 0) ?
+          books.map((book, index) => (
+            <BookCard
+              key={index}
+              book={book}
+            />
+         ))
+       :
+        <Typography
+          variant='h5'
+          sx={{
+            letterSpacing: '-0.04em',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+         {t('list.no-books')}
+        </Typography>
+     }
+
+    </Box>
   )
 }
 

@@ -23,3 +23,18 @@ export async function updateByPositions(lists) {
   )
 }
 
+export async function getBooksNotInList(listId) {
+  const inList = new Set(
+    await db.listBooks.where('listId').equals(listId).keys()
+  )
+
+  const booksNotInList = await db.books
+    .filter(book => !inList.has(book.id))
+    .toArray()
+
+  return booksNotInList
+
+}
+
+export async function addBooksList(booksId, listId) {
+}

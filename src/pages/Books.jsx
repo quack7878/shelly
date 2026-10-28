@@ -51,7 +51,7 @@ export default function Books() {
         {t('home.all-books')}
       </Typography>
 
-      {
+     {
         books.map((book, index) => (
           <BookCard
             key={index}

@@ -161,11 +161,8 @@ function Settings() {
             type='submit'
             variant='contained'
             sx={{
-              px: { xs: 2, sm: 4 },
-              borderRadius: 3,
               textTransform: 'none',
               fontWeight: 700,
-              whiteSpace: 'nowrap',
             }}
           >
             {t('global.save')}
