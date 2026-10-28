@@ -45,7 +45,9 @@ export default function Home() {
       name: '',
     },
     onSubmit: async ({ value }) => {
-      saveList(new List(value))
+      const list = new List(value)
+      saveList(list)
+      setLists([...lists, list])
       setListDialogOpen(false)
       listForm.reset()
     },
@@ -99,7 +101,6 @@ export default function Home() {
               justifyContent: 'center',
               alignItems: 'center',
               flexGrow: 1,
-              padding: 1,
             }}
           >
             <div style={{ display: 'flex', alignItems: 'start', flex: 1, }}>
@@ -172,7 +173,7 @@ export default function Home() {
           overflowY: 'hidden',
           width: '100%',
           gap: 2,
-          padding: 2,
+          padding: '16px',
           scrollSnapType: 'x mandatory',
         }}
       >
