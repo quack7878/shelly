@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { get } from '../services/preferences'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add'
 
 import {
   Box,
@@ -10,6 +11,7 @@ import {
   CardContent,
   CardActionArea,
   Typography,
+  Button,
 } from '@mui/material'
 
 export default function List() {
@@ -30,7 +32,15 @@ export default function List() {
   }, [])
 
   return (
-    <Box style={{ display: 'flex', flexGrow: 1, flexDirection: 'column', padding: 24 }}>
+    <Box 
+      style={{ 
+        display: 'flex',
+        flexGrow: 1,
+        flexDirection: 'column',
+        padding: 24,
+        position: 'relative',
+      }}
+    >
       <Typography
         variant='h3'
         fontWeight={800}
@@ -45,27 +55,40 @@ export default function List() {
         {list.name}
       </Typography>
 
-     {
-        (books.length > 0) ?
-          books.map((book, index) => (
-            <BookCard
-              key={index}
-              book={book}
-            />
-         ))
-       :
-        <Typography
-          variant='h5'
-          sx={{
-            letterSpacing: '-0.04em',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-         {t('list.no-books')}
-        </Typography>
-     }
+       {
+          (books.length > 0) ?
+            books.map((book, index) => (
+              <BookCard
+                key={index}
+                book={book}
+              />
+           ))
+         :
+          <Typography
+            variant='h5'
+            sx={{
+              letterSpacing: '-0.04em',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+           {t('list.no-books')}
+          </Typography>
+       }
+
+      <Button
+        variant='contained'
+        sx={{
+          position: 'absolute',
+          bottom: '16px',
+          right: '16px',
+          textTransform: 'none',
+          fontWeight: 700,
+        }}
+      >
+        <AddIcon />
+      </Button>
 
     </Box>
   )
