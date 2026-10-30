@@ -25,7 +25,7 @@ export async function updateByPositions(lists) {
 
 export async function getBooksNotInList(listId) {
   const inList = new Set(
-    await db.listBooks.where('listId').equals(listId).keys()
+    await db.booksList.where('listId').equals(listId).keys()
   )
 
   const booksNotInList = await db.books
@@ -36,5 +36,21 @@ export async function getBooksNotInList(listId) {
 
 }
 
-export async function addBooksList(booksId, listId) {
+export async function getBooksByList(listId) {
+  const rows = await db.booksList
+    .where('listId')
+    .equals(listId)
+    .toArray()
+
+  const bookIds = rows.map(row => row.bookId)
+  return (await db.books.bulkGet(bookIds)).filter(Boolean)
 }
+
+export async function addBooksList(listId, bookIds) {
+  if (!bookIds.length) return
+
+  await db.booksList.bulkAdd(
+    bookIds.map(bookId => ({ listId, bookId }))
+  )
+}
+

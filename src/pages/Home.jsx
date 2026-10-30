@@ -218,6 +218,7 @@ export default function Home() {
       <FormDialog 
         open={listDialogOpen}
         onClose={() => setListDialogOpen(false)}
+        title={t('listForm.title')}
       >
         <form 
           id='list'

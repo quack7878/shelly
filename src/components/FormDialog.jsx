@@ -8,13 +8,13 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 
-export default function FormDialog({ open, onClose, children }) {
+export default function FormDialog({ open, onClose, title, children }) {
 
   const { t, i18n } = useTranslation()
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth={true}>
-      <DialogTitle> {t('listForm.title')} </DialogTitle>
+      <DialogTitle> {title} </DialogTitle>
       <DialogContent sx={{ paddingTop: '4px !important' }}>
         { children }
       </DialogContent>

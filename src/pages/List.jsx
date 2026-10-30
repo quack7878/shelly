@@ -3,8 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { get } from '../services/preferences'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
-import AddIcon from '@mui/icons-material/Add'
+import { useForm } from '@tanstack/react-form'
 
+import { getBooksByList, getBooksNotInList, addBooksList } from '../services/lists'
+import ListDialog from '../components/ListDialog'
+import BookCard from '../components/BookCard'
+
+import AddIcon from '@mui/icons-material/Add'
 import {
   Box,
   Card,
@@ -12,6 +17,9 @@ import {
   CardActionArea,
   Typography,
   Button,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material'
 
 export default function List() {
@@ -23,13 +31,40 @@ export default function List() {
   const [list, setList] = useState(() => state?.list)
   const [books, setBooks] = useState([])
 
+  const [listDialogOpen, setListDialogOpen] = useState(false)
+  const [availableBooks, setAvailableBooks] = useState([])
+  const [selectedBookIds, setSelectedBookIds] = useState([])
+
   useEffect(() => {
     async function init() {
       i18n.changeLanguage(await get('language'))
+      setBooks(await getBooksByList(list.id))
     }
 
     init()
   }, [])
+
+  const listForm = useForm({
+    onSubmit: async () => {
+      await addBooksList(list.id, selectedBookIds)
+      setBooks(await getBooksByList(list.id))
+      setListDialogOpen(false)
+    },
+  })
+
+  async function openBookDialog() {
+    setAvailableBooks(await getBooksNotInList(list.id))
+    setSelectedBookIds([])
+    setListDialogOpen(true)
+  }
+
+  function toggleBook(bookId) {
+    setSelectedBookIds(ids => 
+      ids.includes(bookId)
+        ? ids.filter(id => id !== bookId)
+        : [...ids, bookId]
+    )
+  }
 
   return (
     <Box 
@@ -87,10 +122,44 @@ export default function List() {
           fontWeight: 700,
         }}
       >
-        <AddIcon />
+        <AddIcon onClick={openBookDialog} />
       </Button>
 
+      <ListDialog 
+        open={listDialogOpen}
+        onClose={() => setListDialogOpen(false)}
+        title={t('listForm.title')}
+      >
+        <form 
+          id='list'
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            listForm.handleSubmit()
+          }}
+        >
+        </form>
+        <FormGroup>
+          {availableBooks.map(book => {
+            return (
+              <FormControlLabel
+                key={book.id}
+                label={book.title}
+                control={
+                  <Checkbox
+                    checked={selectedBookIds.includes(book.id)}
+                    onChange={() => toggleBook(book.id)}
+                  >
+                  </Checkbox>
+                }
+              >
+              </FormControlLabel>
+            )
+          })}
+        </FormGroup>
+      </ListDialog>
     </Box>
+
   )
 }
 
